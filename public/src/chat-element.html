@@ -1,0 +1,40 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="chat-element">
+    <template>
+        <style>
+            div{
+                box-shadow: 5px 5px 2px #aaaaaa;
+                border-radius: 5px;
+                margin: 10px;
+                padding: 5px;
+                background-color: white;
+            }
+        </style>
+
+        <template is="dom-repeat" items="[[content]]">
+            <div>
+                {{item.message}}
+            </div>
+            <div class="input">
+                <input type="text" id="chat-text" />
+                <input type="button" id="chat-button" value="Send" />
+            </div>
+        </template>
+</template>
+
+<script>
+    Polymer({
+        is: "chat-element",
+
+        ready: function() {
+            this.messages = [];
+        },
+
+        addContent : function(msg){
+            this.push('messages', msg);
+        }
+    });
+</script>
+
+</dom-module>

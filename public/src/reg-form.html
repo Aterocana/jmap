@@ -1,0 +1,50 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="reg-form">
+    <template>
+        <style>
+            div{
+                box-shadow: 5px 5px 2px #aaaaaa;
+                border-radius: 5px;
+                margin: 10px;
+                padding: 5px;
+                background-color: white;
+            }
+        </style>
+
+        <template is="dom-repeat" items="[[content]]">
+            <div>
+                {{item.message}}
+            </div>
+        </template>
+</template>
+
+<script>
+    Polymer({
+        is: "reg-form",
+
+        // add properties and methods on the element's prototype
+
+        properties: {
+            // declare properties for the element's public API
+            greeting: {
+                type: String,
+                value: "Hello!"
+            },
+            content: {
+                type: String,
+                value: ""
+            }
+        },
+
+        ready: function() {
+            this.content = [];
+        },
+
+        addContent : function(msg){
+            this.push('content', msg);
+        }
+    });
+</script>
+
+</dom-module>

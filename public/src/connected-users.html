@@ -1,0 +1,70 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+
+<dom-module id="connected-users">
+    <template>
+        <style>
+            .users {
+                box-shadow       : 5px 5px 2px #aaaaaa;
+                border-radius    : 5px;
+                margin           : 10px;
+                padding          : 5px;
+                background-color : white;
+                width            : 500px;
+            }
+        </style>
+
+        <div class="users">
+            <ul>
+                <template is="dom-repeat" items="{{_toArray(users)}}">
+                    <li>{{item.id}} - {{item.value.name}} - {{item.value.lat}} - {{item.value.lon}}</li>
+                </template>
+            </ul>
+        </div>
+</template>
+
+<script>
+    Polymer({
+        is: "connected-users",
+
+        properties    : {
+            users : {
+                type  : Object,
+                value : {}
+            }
+        },
+
+        ready         : function(){
+            this.users = {};
+        },
+
+        getUsers      : function(){
+            return this.users;
+        },
+
+        setUsers      : function(data){
+            this.users = data;
+        },
+
+        addUser  : function(user){
+            this.users[user.id] = {
+                'name'   : user.name,
+                'lat'    : user.lat,
+                'lon'    : user.lon,
+                'player' : user.player
+            };
+        },
+
+        _toArray: function(obj) {
+            return Object.keys(obj).map(function(key) {
+                return {
+                    id: key,
+                    value: obj[key]
+                };
+            });
+        }
+    });
+</script>
+
+</dom-module>

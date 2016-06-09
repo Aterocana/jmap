@@ -1,0 +1,77 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/iron-form/iron-form.html">
+
+<dom-module id="login-form">
+    <template>
+        <style>
+            .loginForm {
+                box-shadow: 5px 5px 2px #aaaaaa;
+                border-radius: 5px;
+                margin: 10px;
+                padding: 20px;
+                background-color: white;
+                width: 500px;
+            }
+        </style>
+
+        <div class="loginForm">
+            <form is="iron-form" id="form" method="post" action="/form/handler">
+                <paper-input name="name" label="name" value="{{name}}"></paper-input>
+                <paper-input name="lat" type="number" label="latitude" value="{{lat}}"></paper-input>
+                <paper-input name="lon" type="number" label="longitude" value="{{lon}}"></paper-input>
+                <paper-checkbox id="player">Player</paper-checkbox><br/>
+                <paper-button raised onclick="{{submit}}">Login</paper-button>
+            </form>
+        </div>
+</template>
+
+<script>
+    Polymer({
+        is: "login-form",
+
+        properties : {
+            name : {
+                type  : String,
+                value : ""
+            },
+            lat : {
+                type  : Number,
+                value : 0
+            },
+            lon : {
+                type  : Number,
+                value : 0
+            },
+            player : {
+                type  : Boolean,
+                value : false
+            },
+            submit : {
+                type  : Function,
+                value : function(){}
+            }
+        },
+
+        ready : function(){
+        },
+
+        getUser: function(){
+            return {
+                'name'   : this.name,
+                'lat'    : this.lat,
+                'lon'    : this.lon,
+                'player' : this.$.player.checked
+            }
+        },
+
+        attachListener: function(fn){
+            this.submit = fn;
+        }
+    });
+</script>
+
+</dom-module>
