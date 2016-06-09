@@ -49,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             });
         }
     </script>
+    <link rel="import" href="/imports.html" charset="utf-8">
     <script src="/socket.io/socket.io.js"></script>
     <!-- <script>
         var regForm = document.querySelector('reg-form');
@@ -67,26 +68,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </script> -->
 
     <!-- <link rel="import" href="/src/my-app.html"> -->
-    <link rel="import" href="/src/reg-form.html">
     <link type="text/css" rel="stylesheet" href="css/main.css" />
 </head>
 <body>
     <!-- <my-app></my-app> -->
-    <input type="button" name="hola" value="hola" onclick="hola();">
-
-    <reg-form></reg-form>
-    <script>
-        var regForm = document.querySelector('reg-form');
-        var socket = io();
-
-        socket.on('msg', function(data){
-            console.log(data);
-            regForm.addContent(data);
-        });
-
-        function hola(){
-            socket.emit('msg', {'message' : 'hola'});
-        }
-    </script>
+    <login-form></login-form>
+    <connected-users></connected-users>
+    <script type="text/javascript" src="/js/socket-client.js"></script>
 </body>
 </html>
