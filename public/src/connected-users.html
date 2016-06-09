@@ -9,13 +9,18 @@
                 box-shadow       : 5px 5px 2px #aaaaaa;
                 border-radius    : 5px;
                 margin           : 10px;
-                padding          : 5px;
+                padding          : 5px 20px;
                 background-color : white;
                 width            : 500px;
+            }
+            
+            h3 {
+                text-align: center;
             }
         </style>
 
         <div class="users">
+            <h3>Users</h3>
             <ul>
                 <template is="dom-repeat" items="{{_toArray(users)}}">
                     <li>{{item.id}} - {{item.value.name}} - {{item.value.lat}} - {{item.value.lon}}</li>
