@@ -5,10 +5,10 @@
 <link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="/bower_components/iron-form/iron-form.html">
 
-<dom-module id="login-form">
+<dom-module id="objective-form">
     <template>
         <style>
-            .loginForm {
+            .objectiveForm {
                 box-shadow: 5px 5px 2px #aaaaaa;
                 border-radius: 5px;
                 margin: 10px;
@@ -18,11 +18,12 @@
             }
         </style>
 
-        <div class="loginForm">
+        <div class="objectiveForm">
             <form is="iron-form" id="form" method="post" action="/form/handler">
-                <paper-input name = "name" label  = "name" value  = "{{name}}"></paper-input>
-                <paper-input name = "color" label = "color" value = "{{color}}"></paper-input>
-                <paper-checkbox id = "admin">Admin</paper-checkbox>
+                <paper-input name = "name" label   = "name" value   = "{{name}}"></paper-input>
+                <paper-input name = "symbol" label = "symbol" value = "{{symbol}}"></paper-input>
+                <paper-input name = "lat" label    = "lat" value    = "{{lat}}"></paper-input>
+                <paper-input name = "lon" label    = "lon" value    = "{{lon}}"></paper-input>
                 <br/><br/>
                 <paper-button raised onclick="{{submit}}">Login</paper-button>
             </form>
@@ -31,20 +32,24 @@
 
 <script>
     Polymer({
-        is: "login-form",
+        is: "objective-form",
 
         properties : {
             name : {
                 type  : String,
                 value : ""
             },
-            color : {
+            symbol : {
                 type  : String,
                 value : ""
             },
-            admin : {
-                type  : Boolean,
-                value : false
+            lat : {
+                type  : Number,
+                value : 0
+            },
+            lon : {
+                type  : Number,
+                value : 0
             },
             submit : {
                 type  : Function,
@@ -55,11 +60,12 @@
         ready : function(){
         },
 
-        getUser: function(){
+        getObjective: function(){
             return {
-                'name'  : this.name,
-                'color' : this.color,
-                'admin' : this.$.admin.checked
+                'name'   : this.name,
+                'symbol' : this.symbol,
+                'lon'    : this.lon,
+                'lat'    : this.lat
             }
         },
 

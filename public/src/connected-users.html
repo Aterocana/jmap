@@ -13,7 +13,7 @@
                 background-color : white;
                 width            : 500px;
             }
-            
+
             h3 {
                 text-align: center;
             }
@@ -23,7 +23,7 @@
             <h3>Users</h3>
             <ul>
                 <template is="dom-repeat" items="{{_toArray(users)}}">
-                    <li>{{item.id}} - {{item.value.name}} - {{item.value.lat}} - {{item.value.lon}}</li>
+                    <li>{{item.id}} - {{item.value.name}} - {{item.value.color}}</li>
                 </template>
             </ul>
         </div>
@@ -54,12 +54,17 @@
 
         addUser  : function(user){
             this.users[user.id] = {
-                'name'   : user.name,
-                'lat'    : user.lat,
-                'lon'    : user.lon,
-                'player' : user.player
+                'name'  : user.name,
+                'color' : user.color,
+                'admin' : user.admin,
+
             };
+            if(!user.admin){
+                this.users[user.id].objectives = [];
+            }
         },
+
+        addObjective : function(){},
 
         _toArray: function(obj) {
             return Object.keys(obj).map(function(key) {
