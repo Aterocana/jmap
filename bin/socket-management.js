@@ -2,7 +2,7 @@ module.exports = function(io){
     let clientsMap = {};
 
     io.sockets.on('connection', function(socket){
-        clientsMap[socket.id] = {};
+        // clientsMap[socket.id] = {};
         console.log(`User ${socket.id} connected.`);
         console.log(clientsMap);
         socket.emit('newUser',clientsMap); //send users list on connection
@@ -17,6 +17,7 @@ module.exports = function(io){
         //cambio dati di un utente
         socket.on('userChanged', function(data){
             console.log("SERVER received userChanged", data);
+            clientsMap[socket.id] = {};
             //modifica l'utente
             clientsMap[socket.id].name  = data.name;
             clientsMap[socket.id].color = data.color;
