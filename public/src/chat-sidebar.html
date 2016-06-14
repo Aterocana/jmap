@@ -1,0 +1,62 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/src/chat-contact.html">
+
+<dom-module id="chat-sidebar">
+    <template>
+        <style>
+            @media only screen and (max-width : 540px) {
+                .chat-popup {
+                    display: none !important;
+                }
+            }
+            .chat-sidebar {
+                width          : 200px;
+                position       : fixed;
+                height         : 100%;
+                right          : 0px;
+                top            : 0px;
+                /*padding-top    : 10px;*/
+                /*padding-bottom : 10px;*/
+                border         : 1px solid rgba(29, 49, 91, .3);
+                background-color: rgba(255, 255, 255, 0.5);
+            }
+        </style>
+
+        <div class="chat-sidebar">
+            <template is="dom-repeat" items="{{_toArray(users)}}">
+                <chat-contact contact-name="{{item.value.name}}" contact-color="{{item.value.color}}" contact-></chat-contact>
+            </template>
+        </div>
+</template>
+
+<script>
+    Polymer({
+        is: "chat-sidebar",
+
+        properties: {
+            users : {
+                type  : Object,
+                value : {}
+            }
+        },
+
+        ready: function() {
+            this.users = {};
+        },
+
+        setUsers : function(users){
+            this.users = users;
+        },
+
+        _toArray: function(obj) {
+            return Object.keys(obj).map(function(key) {
+                return {
+                    id: key,
+                    value: obj[key]
+                };
+            });
+        }
+    });
+</script>
+
+</dom-module>

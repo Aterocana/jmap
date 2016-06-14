@@ -59,7 +59,7 @@ module.exports = function(io){
         });
 
         socket.on('disconnect', function() {
-            console.log("user",clientsMap[socket.id].name,"disconnected");
+            console.log("user",clientsMap[socket.id],"disconnected");
             // socket.broadcast.emit('quitUser', clientsMap[socket.id]);
             delete clientsMap[socket.id];
             socket.broadcast.emit('updateUsers', clientsMap);

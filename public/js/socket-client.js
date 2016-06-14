@@ -1,6 +1,7 @@
 var loginForm      = document.querySelector('login-form');
 var objectiveForm  = document.querySelector('objective-form');
-var connectedUsers = document.querySelector('connected-users');
+// var connectedUsers = document.querySelector('connected-users');
+var connectedUsers = document.querySelector('chat-sidebar');
 var usersDiv       = document.getElementById('users');
 var socket         = io();
 var users          = {};

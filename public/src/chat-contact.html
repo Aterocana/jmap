@@ -1,0 +1,164 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="chat-contact">
+    <template>
+        <style>
+            @media only screen and (max-width : 540px) {
+                .chat-popup {
+                    display: none !important;
+                }
+            }
+
+            .sidebar-name
+            {
+                padding-top: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-bottom: 4px;
+                font-size: 12px;
+                height: 30px;
+            }
+
+            .sidebar-wrapper .sidebar-name:nth-child(even){
+                /*background-color: #e1e2e5;*/
+                background-color: white !important;
+            }
+
+            .sidebar-name span
+            {
+                padding-left: 5px;
+            }
+
+            .sidebar-name a
+            {
+                display: block;
+                height: 100%;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .sidebar-name:hover
+            {
+                background-color:silver;
+            }
+
+            .sidebar-name img
+            {
+                width: 32px;
+                height: 32px;
+                vertical-align:middle;
+            }
+
+            .popup-box
+            {
+                display: none;
+                position: fixed;
+                bottom: 0px;
+                right: 220px;
+                height: 285px;
+                background-color: rgb(237, 239, 244);
+                width: 300px;
+                border: 1px solid rgba(29, 49, 91, .3);
+            }
+
+            .popup-box .popup-head
+            {
+                background-color: #6d84b4;
+                padding: 5px;
+                color: white;
+                font-weight: bold;
+                font-size: 14px;
+                clear: both;
+            }
+
+            .popup-box .popup-head .popup-head-left
+            {
+                float: left;
+            }
+
+            .popup-box .popup-head .popup-head-right
+            {
+                float: right;
+                opacity: 0.5;
+            }
+
+            .popup-box .popup-head .popup-head-right a
+            {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .popup-box .popup-messages
+            {
+                height: 100%;
+                overflow-y: scroll;
+            }
+        </style>
+
+        <div class="sidebar-wrapper">
+            <div class="sidebar-name">
+                <!-- Pass username and display name to register popup -->
+                <a onclick="{{register_popup}}">
+                    <span>{{contactName}}</span>
+                </a>
+            </div>
+        </div>
+</template>
+
+<script>
+    Polymer({
+        is: "chat-contact",
+
+        properties: {
+            contactName : {
+                type  : String,
+                value : "Urca"
+            },
+
+            contactColor : {
+                type  : String,
+                value : ""
+            },
+
+            contactAdmin : {
+                type  : Boolean,
+                value : false
+            },
+
+            contactObjectives : {
+                type  : Array,
+                value : []
+            },
+
+            register_popup : {
+                type : Function,
+                value : function(){}
+            }
+        },
+
+        ready: function() {
+            this.register_popup = function(){
+                window.alert("ciao");
+            };
+        },
+
+        setContact : function(user){
+            this.name       = user.name;
+            this.color      = user.color;
+            this.admin      = user.admin;
+            this.objectives = user.objectives;
+        },
+
+        setContactName : function(name){
+            this.contactName = name;
+        },
+
+        setContactColor : function(color){
+            this.contactColor = color;
+        },
+
+        setContactAdmin : function(admin){
+            this.contactAdmin = admin;
+        }
+    });
+</script>
