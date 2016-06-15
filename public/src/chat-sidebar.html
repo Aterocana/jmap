@@ -1,31 +1,104 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
 <link rel="import" href="/src/chat-contact.html">
 
 <dom-module id="chat-sidebar">
     <template>
         <style>
-            @media only screen and (max-width : 540px) {
-                .chat-popup {
+            @media only screen and (max-width : 650px) {
+                #chatWrapper{
                     display: none !important;
                 }
             }
+            #chatWrapper{
+                width                      : 400px;
+                position                   : fixed;
+                right                      : 0px;
+                top                        : 0px;
+                bottom                     : 0px;
+                border                     : 1px solid rgba(29, 49, 91, .3);
+                background-color           : rgba(255, 255, 255, 0.5);
+                transition                 : 500ms;
+                transition-timing-function : ease-in-out;
+            }
+            #chatWrapper.minimized {
+                right : -402px;
+            }
+            .chat-show {
+                position                   : fixed;
+                right                      : 402px;
+                display                    : inline-block;
+                height                     : 20px;
+                width                      : 20px;
+                background-color           : red;
+                text-align                 : center;
+                cursor                     : pointer;
+                transition                 : 500ms;
+                transition-timing-function : ease-in-out;
+            }
+            #chatWrapper.minimized .chat-show{
+                right : 0px;
+                transform: rotate(180deg);
+            }
+
             .chat-sidebar {
-                width          : 200px;
-                position       : fixed;
-                height         : 100%;
-                right          : 0px;
-                top            : 0px;
-                /*padding-top    : 10px;*/
-                /*padding-bottom : 10px;*/
-                border         : 1px solid rgba(29, 49, 91, .3);
-                background-color: rgba(255, 255, 255, 0.5);
+                /*width            : 400px;
+                position         : fixed;*/
+                height           : 33%;
+                right            : 0px;
+                top              : 0px;
+                border           : 1px solid rgba(29, 49, 91, .3);
+                background-color : rgba(255, 255, 255, 0.5);
+            }
+            .chat-messages {
+                /*position         : fixed;
+                width            : 400px;*/
+                top              : 33%;
+                right            : 0px;
+                height           : 60%;
+                border           : 1px solid rgba(29, 49, 91, .3);
+                background-color : rgba(255, 255, 255, 0.5);
+            }
+            .message{
+                width: 100%;
+            }
+
+            .send-message {
+                /*positiochatWrappern         : fixed;
+                width            : 400px;*/
+                bottom           : 0%;
+                right            : 0px;
+                height           : 7%;
+                border           : 1px solid rgba(29, 49, 91, .3);
+                background-color : rgba(255, 255, 255, 0.5);
+            }
+
+            .send-button {
+
             }
         </style>
 
-        <div class="chat-sidebar">
-            <template is="dom-repeat" items="{{_toArray(users)}}">
-                <chat-contact contact-name="{{item.value.name}}" contact-color="{{item.value.color}}" contact-></chat-contact>
-            </template>
+        <div id="chatWrapper">
+            <div class="chat-show" onclick="{{transition}}">
+                >
+            </div>
+            <div class="chat-sidebar">
+                <template is="dom-repeat" items="{{_toArray(users)}}">
+                    <chat-contact contact-name="{{item.value.name}}" contact-color="{{item.value.color}}" contact-></chat-contact>
+                </template>
+            </div>
+            <div class="chat-messages">
+                <template is="dom-repeat" items="{{_toArray(messages)}}">
+                    <div class="message">
+                        <span class="time">[{{item.value.time}}]</span><span class="sender">{{item.value.name}}</span><span class="message">{{item.value.message}}</span>
+                    </div>
+                </template>
+            </div>
+            <div class="send-message">
+                <input type="text" name="message" value="" id="message">
+                <paper-button class="send-button" raised onclick="{{sendMessage}}">Send</paper-button>
+            </div>
         </div>
 </template>
 
@@ -37,15 +110,73 @@
             users : {
                 type  : Object,
                 value : {}
+            },
+            author : {
+                type : Object,
+                value : {}
+            },
+            messages : {
+                type  : Object,
+                value : {}
+            },
+            sendMessage : {
+                type  : Function,
+                value : function(){}
+            },
+            expanded : {
+                type  : Boolean,
+                value : true
+            },
+            transition : {
+                type  : Function,
+                value : function(){}
             }
         },
 
         ready: function() {
+            var e = this.$;
+            this.expanded = true;
             this.users = {};
+
+            this.transition = function(){
+                if(!this.expanded){
+                    e.chatWrapper.className = "minimized";
+                }
+                else{
+                    e.chatWrapper.className = "";
+                }
+                this.expanded = !this.expanded;
+            }
         },
 
         setUsers : function(users){
             this.users = users;
+        },
+
+        setAuthor : function(user){
+            console.log(user);
+            this.author = user;
+            console.log(this.author);
+        },
+
+        setMessages : function(messages){
+            this.messages = messages;
+        },
+
+        addMessage : function(msg){
+            this.messages[msg.time];
+        },
+
+        setSendMessage : function(fn){
+            console.log(this.author);
+            var e = this.$;
+            this.sendMessage = function(){
+                var data = {
+                    "name" : "this.author.name",
+                    "message" : e.message.value
+                };
+                fn(data);
+            };
         },
 
         _toArray: function(obj) {

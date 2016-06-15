@@ -7,7 +7,12 @@ var socket         = io();
 var users          = {};
 
 loginForm.attachListener(function(){
+    connectedUsers.setAuthor(loginForm.getUser());
     socket.emit('userChanged', loginForm.getUser());
+});
+
+connectedUsers.setSendMessage(function(data){
+    socket.emit('msg', data);
 });
 
 objectiveForm.attachListener(function(){
@@ -28,7 +33,7 @@ socket.on('userChanged', function(data){
 
 socket.on('msg', function(data){
     console.log(data);
-    regForm.addContent(data);
+    connectedUsers.setMessages(data);
 });
 
 function sendMessage(){

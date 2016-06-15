@@ -1,5 +1,6 @@
 module.exports = function(io){
     let clientsMap = {};
+    let messages = {};
 
     io.sockets.on('connection', function(socket){
         // clientsMap[socket.id] = {};
@@ -56,6 +57,13 @@ module.exports = function(io){
                 socket.emit('updateUsers', clientsMap);
             }
 
+        });
+
+        //messaggio di chat
+        socket.on('msg', function(data){
+            messages[new Date()] = {"name" : data.name, "msg": data.msg};
+            socket.emit('msg', messages);
+            socket.broadcast.emit('msg', messages);
         });
 
         socket.on('disconnect', function() {
