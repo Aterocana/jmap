@@ -23,7 +23,7 @@ module.exports = function(io){
             clientsMap[socket.id].name  = data.name;
             clientsMap[socket.id].color = data.color;
             clientsMap[socket.id].admin = data.admin;
-            //l'admin non dispone obiettivi sulla mappa
+            //l'admin non dispone obiettivi sulla mappa e non deve vedere la chat
             if(!data.admin){
                 clientsMap[socket.id].objectives = [];
                 socket.join('chat');
