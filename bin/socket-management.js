@@ -61,7 +61,9 @@ module.exports = function(io){
 
         //messaggio di chat
         socket.on('msg', function(data){
-            messages[new Date()] = {"name" : data.name, "msg": data.msg};
+            console.log("SERVER received msg", data);
+            messages[new Date()] = {"name" : clientsMap[socket.id].name, "msg": data.msg, "color": clientsMap[socket.id].color};
+            console.log(messages);
             socket.emit('msg', messages);
             socket.broadcast.emit('msg', messages);
         });

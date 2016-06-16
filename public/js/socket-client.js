@@ -1,17 +1,15 @@
-var loginForm      = document.querySelector('login-form');
-var objectiveForm  = document.querySelector('objective-form');
-// var connectedUsers = document.querySelector('connected-users');
-var connectedUsers = document.querySelector('chat-sidebar');
-var usersDiv       = document.getElementById('users');
-var socket         = io();
-var users          = {};
+var loginForm     = document.querySelector('login-form');
+var objectiveForm = document.querySelector('objective-form');
+var chatSidebar   = document.querySelector('chat-sidebar');
+var usersDiv      = document.getElementById('users');
+var socket        = io();
+var users         = {};
 
 loginForm.attachListener(function(){
-    connectedUsers.setAuthor(loginForm.getUser());
     socket.emit('userChanged', loginForm.getUser());
 });
 
-connectedUsers.setSendMessage(function(data){
+chatSidebar.setSendMessage(function(data){
     socket.emit('msg', data);
 });
 
@@ -21,21 +19,17 @@ objectiveForm.attachListener(function(){
 
 socket.on('updateUsers', function(data){
     users = data;
-    connectedUsers.setUsers(users);
+    chatSidebar.setUsers(users);
     console.log('updateUsers', users);
 });
 
 socket.on('userChanged', function(data){
     users[data.id] = data.user;
-    connectedUsers.setUsers(users);
+    chatSidebar.setUsers(users);
     console.log('userChanged', users);
 });
 
 socket.on('msg', function(data){
     console.log(data);
-    connectedUsers.setMessages(data);
+    chatSidebar.setMessages(data);
 });
-
-function sendMessage(){
-    socket.emit('msg', {'message' : 'hola'});
-}

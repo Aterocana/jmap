@@ -1,7 +1,11 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
-<link rel="import" href="/src/chat-contact.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="/src/chat/chat-contact.html">
+<link rel="import" href="/src/chat/chat-element.html">
 
 <dom-module id="chat-sidebar">
     <template>
@@ -41,10 +45,7 @@
                 right : 0px;
                 transform: rotate(180deg);
             }
-
             .chat-sidebar {
-                /*width            : 400px;
-                position         : fixed;*/
                 height           : 33%;
                 right            : 0px;
                 top              : 0px;
@@ -52,30 +53,33 @@
                 background-color : rgba(255, 255, 255, 0.5);
             }
             .chat-messages {
-                /*position         : fixed;
-                width            : 400px;*/
+                position         : relative;
                 top              : 33%;
                 right            : 0px;
                 height           : 60%;
                 border           : 1px solid rgba(29, 49, 91, .3);
                 background-color : rgba(255, 255, 255, 0.5);
+                overflow-y       : hidden;
+            }
+            .chat-messages-content {
+                position : absolute;
+                bottom   : 0;
+                padding  : 0 10px;
             }
             .message{
                 width: 100%;
             }
-
             .send-message {
-                /*positiochatWrappern         : fixed;
-                width            : 400px;*/
                 bottom           : 0%;
                 right            : 0px;
-                height           : 7%;
+                height           : 6%;
                 border           : 1px solid rgba(29, 49, 91, .3);
+                padding          : 0px 5px;
                 background-color : rgba(255, 255, 255, 0.5);
             }
 
             .send-button {
-
+                color : var(--paper-indigo-500);
             }
         </style>
 
@@ -89,15 +93,21 @@
                 </template>
             </div>
             <div class="chat-messages">
-                <template is="dom-repeat" items="{{_toArray(messages)}}">
-                    <div class="message">
-                        <span class="time">[{{item.value.time}}]</span><span class="sender">{{item.value.name}}</span><span class="message">{{item.value.message}}</span>
-                    </div>
-                </template>
+                <div class="chat-messages-content">
+                    <template is="dom-repeat" items="{{_toArray(messages)}}">
+                        <div class="message">
+                            <chat-element user-name="{{item.value.name}}" user-message="{{item.value.msg}}" time-sent="{{item.id}}" user-color="{{item.value.color}}"></chat-element>
+                            <!-- <span class="time">[{{item.value.time}}]</span><span class="sender">{{item.value.name}}</span><span class="message">{{item.value.msg}}</span> -->
+                        </div>
+                    </template>
+                </div>
             </div>
             <div class="send-message">
-                <input type="text" name="message" value="" id="message">
-                <paper-button class="send-button" raised onclick="{{sendMessage}}">Send</paper-button>
+                <iron-a11y-keys id="a11y" target="[[target]]" keys="enter"
+                    on-keys-pressed="sendMessage"></iron-a11y-keys>
+                <paper-input label="Send a message" name="message" id="message" value="{{message}}" no-label-float>
+                    <paper-icon-button suffix onclick="{{sendMessage}}" icon="send" alt="send" title="send" class="send-button"></paper-icon-button>
+                </paper-input>
             </div>
         </div>
 </template>
@@ -109,10 +119,6 @@
         properties: {
             users : {
                 type  : Object,
-                value : {}
-            },
-            author : {
-                type : Object,
                 value : {}
             },
             messages : {
@@ -130,6 +136,16 @@
             transition : {
                 type  : Function,
                 value : function(){}
+            },
+            message : {
+                type  : String,
+                value : ""
+            },
+            target : {
+                type : Object,
+                value : function(){
+                    return this.$.message;
+                }
             }
         },
 
@@ -137,26 +153,21 @@
             var e = this.$;
             this.expanded = true;
             this.users = {};
+            this.message = "";
 
             this.transition = function(){
-                if(!this.expanded){
-                    e.chatWrapper.className = "minimized";
+                if(this.expanded){
+                    this.$.chatWrapper.className = "minimized";
                 }
                 else{
-                    e.chatWrapper.className = "";
+                    this.$.chatWrapper.className = "";
                 }
                 this.expanded = !this.expanded;
-            }
+            }.bind(this);
         },
 
         setUsers : function(users){
             this.users = users;
-        },
-
-        setAuthor : function(user){
-            console.log(user);
-            this.author = user;
-            console.log(this.author);
         },
 
         setMessages : function(messages){
@@ -168,15 +179,15 @@
         },
 
         setSendMessage : function(fn){
-            console.log(this.author);
-            var e = this.$;
+            console.log("setting: ", this.message);
             this.sendMessage = function(){
+                console.log("sending: ", this.message);
                 var data = {
-                    "name" : "this.author.name",
-                    "message" : e.message.value
+                    "msg" : this.message
                 };
+                this.message = "";
                 fn(data);
-            };
+            }.bind(this);
         },
 
         _toArray: function(obj) {
