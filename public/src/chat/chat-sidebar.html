@@ -21,44 +21,46 @@
                 right                      : 0px;
                 top                        : 0px;
                 bottom                     : 0px;
-                border                     : 1px solid rgba(29, 49, 91, .3);
-                background-color           : rgba(255, 255, 255, 0.5);
-                transition                 : 500ms;
-                transition-timing-function : ease-in-out;
+                /*border                     : 1px solid rgba(29, 49, 91, .3);*/
+                background-color           : rgba(255, 255, 255, 0.7);
             }
             #chatWrapper.minimized {
                 right : -402px;
             }
+            .chat-show-wrapper {
+                background-color : rgba(255, 255, 255, 0.7);
+                position         : fixed;
+                right            : 400px;
+                border-radius    : 25px 0px 0px 25px;
+            }
             .chat-show {
-                position                   : fixed;
-                right                      : 402px;
-                display                    : inline-block;
-                height                     : 20px;
-                width                      : 20px;
-                background-color           : red;
-                text-align                 : center;
                 cursor                     : pointer;
+            }
+            #chatWrapper, .chat-show-wrapper, .chat-show {
                 transition                 : 500ms;
                 transition-timing-function : ease-in-out;
             }
-            #chatWrapper.minimized .chat-show{
+            .chat-show:hover {
+                color : var(--google-yellow-700);
+            }
+            #chatWrapper.minimized .chat-show-wrapper{
                 right : 0px;
+            }
+            #chatWrapper.minimized .chat-show-wrapper .chat-show{
                 transform: rotate(180deg);
             }
+
             .chat-sidebar {
                 height           : 33%;
                 right            : 0px;
                 top              : 0px;
-                border           : 1px solid rgba(29, 49, 91, .3);
-                background-color : rgba(255, 255, 255, 0.5);
             }
             .chat-messages {
                 position         : relative;
                 top              : 33%;
                 right            : 0px;
                 height           : 60%;
-                border           : 1px solid rgba(29, 49, 91, .3);
-                background-color : rgba(255, 255, 255, 0.5);
+                border-top       : 1px solid rgba(29, 49, 91, .5);
                 overflow-y       : hidden;
             }
             .chat-messages-content {
@@ -73,9 +75,8 @@
                 bottom           : 0%;
                 right            : 0px;
                 height           : 6%;
-                border           : 1px solid rgba(29, 49, 91, .3);
+                /*border-top       : 1px solid rgba(29, 49, 91, .3);*/
                 padding          : 0px 5px;
-                background-color : rgba(255, 255, 255, 0.5);
             }
 
             .send-button {
@@ -84,8 +85,11 @@
         </style>
 
         <div id="chatWrapper">
-            <div class="chat-show" onclick="{{transition}}">
-                >
+            <!-- <div class="chat-show" onclick="{{transition}}">
+                <iron-icon icon="icons:chevron-right"></iron-icon>
+            </div> -->
+            <div class="chat-show-wrapper">
+                <paper-icon-button suffix onclick="{{transition}}" icon="icons:chevron-right" alt="minimiza" title="minimize" class="chat-show"></paper-icon-button>
             </div>
             <div class="chat-sidebar">
                 <template is="dom-repeat" items="{{_toArray(users)}}">
