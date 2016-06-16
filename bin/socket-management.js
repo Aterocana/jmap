@@ -26,6 +26,8 @@ module.exports = function(io){
             //l'admin non dispone obiettivi sulla mappa
             if(!data.admin){
                 clientsMap[socket.id].objectives = [];
+                socket.join('chat');
+                socket.emit('msg', messages);
             }
             //informa i precedenti utenti dei cambiamenti
             socket.broadcast.emit('updateUsers', clientsMap);
@@ -38,10 +40,6 @@ module.exports = function(io){
             console.log("SERVER received newObj", data);
             if(!clientsMap[socket.id].admin){
                 clientsMap[socket.id].objectives.push(data);
-                /*clientsMap[socket.id].name   = data.name;
-                clientsMap[socket.id].symbol = data.symbol;
-                clientsMap[socket.id].lat    = data.lat;
-                clientsMap[socket.id].lon    = data.lon;*/
                 socket.broadcast.emit('updateUsers', clientsMap);
                 socket.emit('updateUsers', clientsMap);
             }
@@ -64,8 +62,8 @@ module.exports = function(io){
             console.log("SERVER received msg", data);
             messages[new Date()] = {"name" : clientsMap[socket.id].name, "msg": data.msg, "color": clientsMap[socket.id].color};
             console.log(messages);
-            socket.emit('msg', messages);
-            socket.broadcast.emit('msg', messages);
+            io.sockets.in('chat').emit('msg', messages);
+            // io.sockets.in('chat').broadcast.emit('msg', messages);
         });
 
         socket.on('disconnect', function() {
