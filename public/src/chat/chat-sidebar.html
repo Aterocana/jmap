@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
@@ -16,22 +17,25 @@
                 }
             }
             #chatWrapper{
-                width                      : 400px;
-                position                   : fixed;
-                right                      : 0px;
-                top                        : 0px;
-                bottom                     : 0px;
-                /*border                     : 1px solid rgba(29, 49, 91, .3);*/
-                background-color           : rgba(255, 255, 255, 0.7);
+                width            : 400px;
+                position         : fixed;
+                right            : 0px;
+                top              : 0px;
+                bottom           : 0px;
+                /*border         : 1px solid rgba(29, 49, 91, .3);*/
+                background-color : rgba(255, 255, 255, 1);
+                box-shadow       : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             }
             #chatWrapper.minimized {
-                right : -402px;
+                right : -390px;
             }
             .chat-show-wrapper {
-                background-color : rgba(255, 255, 255, 0.7);
+                background-color : rgba(255, 255, 255, 1);
                 position         : fixed;
                 right            : 400px;
                 border-radius    : 25px 0px 0px 25px;
+                /*box-shadow       : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+                box-shadow       : 0px 3px 0px 0 rgba(0, 0, 0, 0.1);
             }
             .chat-show {
                 cursor                     : pointer;
@@ -44,7 +48,7 @@
                 color : var(--google-yellow-700);
             }
             #chatWrapper.minimized .chat-show-wrapper{
-                right : 0px;
+                right : 10px;
             }
             #chatWrapper.minimized .chat-show-wrapper .chat-show{
                 transform: rotate(180deg);
@@ -66,7 +70,7 @@
             .chat-messages-content {
                 position : absolute;
                 bottom   : 0;
-                padding  : 0 10px;
+                padding  : 0 20px;
             }
             .message{
                 width: 100%;
@@ -76,7 +80,7 @@
                 right            : 0px;
                 height           : 6%;
                 /*border-top       : 1px solid rgba(29, 49, 91, .3);*/
-                padding          : 0px 5px;
+                padding          : 0px 20px;
             }
 
             .send-button {
@@ -85,9 +89,6 @@
         </style>
 
         <div id="chatWrapper">
-            <!-- <div class="chat-show" onclick="{{transition}}">
-                <iron-icon icon="icons:chevron-right"></iron-icon>
-            </div> -->
             <div class="chat-show-wrapper">
                 <paper-icon-button suffix onclick="{{transition}}" icon="icons:chevron-right" alt="minimiza" title="minimize" class="chat-show"></paper-icon-button>
             </div>
