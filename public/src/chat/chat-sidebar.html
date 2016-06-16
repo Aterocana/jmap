@@ -117,30 +117,37 @@
         is: "chat-sidebar",
 
         properties: {
+            /*Utenti connessi*/
             users : {
                 type  : Object,
                 value : {}
             },
+            /*Messaggi inviati*/
             messages : {
                 type  : Object,
                 value : {}
             },
+            /*funzione per mandare i messaggi tramite i socket*/
             sendMessage : {
                 type  : Function,
                 value : function(){}
             },
+            /*booleano per indicare se la sidebar della chat è visibile*/
             expanded : {
                 type  : Boolean,
                 value : true
             },
+            /*funzione per espandere o minimizzare la sidebar della chat*/
             transition : {
                 type  : Function,
                 value : function(){}
             },
+            /*variabile che indica il contenuto della riga di chat da inviare*/
             message : {
                 type  : String,
                 value : ""
             },
+            /*funzione che restituisce l'elemento su cui è attivo il listener per il tasto ENTER*/
             target : {
                 type : Object,
                 value : function(){
