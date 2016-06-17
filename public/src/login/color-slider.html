@@ -1,0 +1,63 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+
+<dom-module id="color-slider">
+    <template>
+        <style is="custom-style">
+            .slider-wrapper{
+                width: 230px;
+                padding: 10px;
+                background-color: yellow;
+            }
+            .color-wrapper {
+                float: right;
+                width: 50%;
+                height: 50px;
+                background-color: black;
+            }
+            paper-slider.red {
+                --paper-slider-knob-color: var(--paper-red-500);
+                --paper-slider-active-color: var(--paper-red-500);
+            }
+            paper-slider.green {
+                --paper-slider-knob-color: var(--paper-green-500);
+                --paper-slider-active-color: var(--paper-green-500);
+            }
+            paper-slider.blue {
+                --paper-slider-knob-color: var(--paper-light-blue-500);
+                --paper-slider-active-color: var(--paper-light-blue-500);
+            }
+        </style>
+
+        <div class="color-wrapper"></div>
+        <div class="slider-wrapper">
+            <div>R</div>
+            <paper-slider class="red" value="{{red}}" min="0" max="255" pin="true"></paper-slider>
+            <div>G</div>
+            <paper-slider class="green" value="{{green}}" min="0" max="255" pin="true"></paper-slider>
+            <div>B</div>
+            <paper-slider class="blue" value="{{blue}}" min="0" max="255" pin="true"></paper-slider>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: "color-slider",
+            properties: {
+                red : {
+                    type: Number,
+                    value: 0
+                },
+                green : {
+                    type: Number,
+                    value: 0
+                },
+                blue : {
+                    type: Number,
+                    value: 0
+                },
+            },
+            ready: function(){},
+        });
+    </script>
+</dom-module>
