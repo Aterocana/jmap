@@ -2,8 +2,10 @@
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
-<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="/bower_components/iron-form/iron-form.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+
+<link rel="import" href="/src/login/color-slider.html">
 
 <dom-module id="login-form">
     <template>
@@ -20,9 +22,12 @@
 
         <div class="loginForm">
             <form is="iron-form" id="form" method="post" action="/form/handler">
-                <paper-input name = "name" label  = "name" value  = "{{name}}"></paper-input>
-                <paper-input name = "color" label = "color" value = "{{color}}"></paper-input>
-                <paper-checkbox id = "admin">Admin</paper-checkbox>
+                <!-- <paper-input name = "name" label  = "name" value  = "{{name}}"></paper-input> -->
+                <paper-input name="name" label="name" value="{{name}}">
+                    <paper-checkbox suffix id = "admin">Admin</paper-checkbox>
+                </paper-input>
+                <!-- <paper-input name = "color" label = "color" value = "{{color}}"></paper-input> -->
+                <color-slider></color-slider>
                 <br/><br/>
                 <paper-button raised onclick="{{submit}}">Login</paper-button>
             </form>
