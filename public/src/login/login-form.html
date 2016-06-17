@@ -10,6 +10,14 @@
 <dom-module id="login-form">
     <template>
         <style>
+            @media only screen and (max-width : 650px) {
+                #.loginForm{
+                    width: 100%;
+                }                
+            }
+            .header{
+                text-align: center;
+            }
             .loginForm {
                 box-shadow: 5px 5px 2px #aaaaaa;
                 border-radius: 5px;
@@ -18,18 +26,26 @@
                 background-color: white;
                 width: 500px;
             }
+            .footer{
+                text-align: center;
+            }
         </style>
 
         <div class="loginForm">
+            <div class="header">
+                <h2>Login</h2>
+            </div>
             <form is="iron-form" id="form" method="post" action="/form/handler">
                 <!-- <paper-input name = "name" label  = "name" value  = "{{name}}"></paper-input> -->
                 <paper-input name="name" label="name" value="{{name}}">
                     <paper-checkbox suffix id = "admin">Admin</paper-checkbox>
                 </paper-input>
                 <!-- <paper-input name = "color" label = "color" value = "{{color}}"></paper-input> -->
-                <color-slider></color-slider>
-                <br/><br/>
-                <paper-button raised onclick="{{submit}}">Login</paper-button>
+                <color-slider id="colorSlider"></color-slider>
+                <br/>
+                <div class="footer">
+                    <paper-button raised onclick="{{submit}}">Login</paper-button>
+                </div>
             </form>
         </div>
 </template>
@@ -63,7 +79,7 @@
         getUser: function(){
             return {
                 'name'  : this.name,
-                'color' : this.color,
+                'color' : this.$.colorSlider.generateColor(),
                 'admin' : this.$.admin.checked
             }
         },

@@ -3,10 +3,12 @@
 <dom-module id="chat-element">
     <template>
         <style>
-
+            .sender {
+                font-weight: bold;
+            }
         </style>
 
-        <span class="time">[{{computedTime}}]</span> <span class="sender">{{userName}} ({{userColor}})</span>: <span class="message">{{userMessage}}</span>
+        <span class="time">[{{computedTime}}]</span> <span id="sender" class="sender">{{userName}}</span>: <span class="message">{{userMessage}}</span>
 </template>
 
 <script>
@@ -37,6 +39,7 @@
         },
 
         ready: function() {
+            this.$.sender.setAttribute("style", "color: "+this.userColor+";");
             var time = new Date(this.timeSent);
             if(time){
                 this.computedTime = this.zeroFill(time.getHours())+":"+this.zeroFill(time.getMinutes())+":"+this.zeroFill(time.getSeconds());

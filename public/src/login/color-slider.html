@@ -4,16 +4,23 @@
 <dom-module id="color-slider">
     <template>
         <style is="custom-style">
+            #colorWrapper, .slider-wrapper{
+                margin: 10px 0;
+            }
             .slider-wrapper{
                 width: 230px;
                 padding: 10px;
-                background-color: yellow;
             }
-            .color-wrapper {
+            #colorWrapper {
                 float: right;
-                width: 50%;
-                height: 50px;
-                background-color: black;
+                width: 200px;
+                height: 200px;
+                text-align: center;
+            }
+            #colorPreview{
+                border-radius: 200px;
+                height: 200px;
+                width: 200px;
             }
             paper-slider.red {
                 --paper-slider-knob-color: var(--paper-red-500);
@@ -29,14 +36,16 @@
             }
         </style>
 
-        <div class="color-wrapper"></div>
+        <div id="colorWrapper">
+            <div id="colorPreview"></div>
+        </div>
         <div class="slider-wrapper">
             <div>R</div>
-            <paper-slider class="red" value="{{red}}" min="0" max="255" pin="true"></paper-slider>
+            <paper-slider class="red" value="{{red}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
             <div>G</div>
-            <paper-slider class="green" value="{{green}}" min="0" max="255" pin="true"></paper-slider>
+            <paper-slider class="green" value="{{green}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
             <div>B</div>
-            <paper-slider class="blue" value="{{blue}}" min="0" max="255" pin="true"></paper-slider>
+            <paper-slider class="blue" value="{{blue}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
         </div>
     </template>
 
@@ -57,7 +66,22 @@
                     value: 0
                 },
             },
-            ready: function(){},
+            ready: function(){
+                this.changeColor();
+            },
+            changeColor: function(){
+                this.$.colorPreview.setAttribute('style', "background-color:"+this.generateColor()+";");
+            },
+            generateColor: function(){
+                return "#"+this.zeroFill(this.red.toString(16))+this.zeroFill(this.green.toString(16))+this.zeroFill(this.blue.toString(16));
+            },
+            zeroFill : function(n){
+                var tmp = parseInt(n);
+                if(tmp <10){
+                    return "0"+tmp;
+                }
+                return n;
+            }
         });
     </script>
 </dom-module>

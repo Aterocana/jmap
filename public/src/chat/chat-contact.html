@@ -35,7 +35,7 @@
             <div class="sidebar-name">
                 <!-- Pass username and display name to register popup -->
                 <a onclick="{{register_popup}}">
-                    <span>{{contactName}}</span>
+                    <span id="name">{{contactName}}</span>
                 </a>
             </div>
         </div>
@@ -73,6 +73,7 @@
         },
 
         ready: function() {
+            this.$.name.setAttribute("style", "color: "+this.contactColor+";");
             this.register_popup = function(){
                 window.alert("ciao");
             };
