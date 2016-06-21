@@ -16,6 +16,13 @@
                     display: none !important;
                 }
             }
+            #chatWrapper.hidden{
+                right: -500px;
+            }
+            #chatWrapper.hidden .chat-show-wrapper{
+                right: -490px;
+            }
+
             #chatWrapper{
                 width            : 400px;
                 position         : fixed;
@@ -55,9 +62,10 @@
             }
 
             .chat-sidebar {
-                height           : 33%;
-                right            : 0px;
-                top              : 0px;
+                height  : 33%;
+                right   : 0px;
+                top     : 0px;
+                z-index : 10;
             }
             .chat-messages {
                 position         : relative;
@@ -88,7 +96,7 @@
             }
         </style>
 
-        <div id="chatWrapper">
+        <div id="chatWrapper" class="hidden">
             <div class="chat-show-wrapper">
                 <paper-icon-button suffix onclick="{{transition}}" icon="icons:chevron-right" alt="minimiza" title="minimize" class="chat-show"></paper-icon-button>
             </div>
@@ -188,6 +196,10 @@
 
         addMessage : function(msg){
             this.messages[msg.time];
+        },
+
+        slideIn : function(){
+            this.$.chatWrapper.className = "";
         },
 
         setSendMessage : function(fn){

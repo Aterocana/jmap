@@ -1,22 +1,25 @@
 var loginForm     = document.querySelector('login-form');
-var objectiveForm = document.querySelector('objective-form');
+// var objectiveForm = document.querySelector('objective-form');
 var chatSidebar   = document.querySelector('chat-sidebar');
-var usersDiv      = document.getElementById('users');
+var mapDisplay    = document.querySelector('map-display');
 var socket        = io();
 
 socket.on('connect', function(){
     /* imposto il socket a cui mandare i cambiamenti degli utenti*/
     loginForm.attachListener(function(){
         socket.emit('userChanged', loginForm.getUser());
+        chatSidebar.slideIn();
+        loginForm.slideOut();
+        mapDisplay.show();
     });
     /* imposto il socket a cui mandare i nuovi messaggi*/
     chatSidebar.setSendMessage(function(data){
         socket.emit('msg', data);
     });
     /* imposto il socket a cui mandare i cambiamenti di obiettivi*/
-    objectiveForm.attachListener(function(){
-        socket.emit('newObj', objectiveForm.getObjective());
-    });
+    // objectiveForm.attachListener(function(){
+    //     socket.emit('newObj', objectiveForm.getObjective());
+    // });
 
     socket.on('updateUsers', function(data){
         // inoltro gli utenti aggiornati

@@ -5,22 +5,22 @@
     <template>
         <style is="custom-style">
             #colorWrapper, .slider-wrapper{
-                margin: 10px 0;
+                margin: 5% auto;
             }
-            .slider-wrapper{
-                width: 230px;
-                padding: 10px;
-            }
-            #colorWrapper {
-                float: right;
-                width: 200px;
-                height: 200px;
+            .slider-wrapper, #colorWrapper{
+                width: 90%;
+                padding: 0 5%;
                 text-align: center;
             }
             #colorPreview{
-                border-radius: 200px;
-                height: 200px;
-                width: 200px;
+                margin: auto;
+                border-radius: 150px;
+                height: 150px;
+                width: 150px;
+                box-shadow    : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+            .color{
+                text-align: left;
             }
             paper-slider.red {
                 --paper-slider-knob-color: var(--paper-red-500);
@@ -34,18 +34,38 @@
                 --paper-slider-knob-color: var(--paper-light-blue-500);
                 --paper-slider-active-color: var(--paper-light-blue-500);
             }
-        </style>
+            @media screen and (min-width: 640px){
+                .slider-wrapper{
+                    width: 40%;
+                    display: inline-block;
+                    float: left;
+                }
+                #colorWrapper {
+                    width: 40%;
+                    margin-top: 10%;
+                    margin-left: 60%;
+                    margin-bottom: 20%;
+                }
+            }
+            @@media screen and (min-width: 1200px) {
+                #colorPreview{
+                    border-radius : 200px;
+                    height        : 200px;
+                    width         : 200px;
+                }
+            }
 
+        </style>
+        <div class="slider-wrapper">
+            <div class="color">R</div>
+            <paper-slider class="red" value="{{red}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
+            <div class="color">G</div>
+            <paper-slider class="green" value="{{green}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
+            <div class="color">B</div>
+            <paper-slider class="blue" value="{{blue}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
+        </div>
         <div id="colorWrapper">
             <div id="colorPreview"></div>
-        </div>
-        <div class="slider-wrapper">
-            <div>R</div>
-            <paper-slider class="red" value="{{red}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
-            <div>G</div>
-            <paper-slider class="green" value="{{green}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
-            <div>B</div>
-            <paper-slider class="blue" value="{{blue}}" min="0" max="255" pin="true" on-change="changeColor"></paper-slider>
         </div>
     </template>
 

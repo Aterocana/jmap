@@ -1,0 +1,36 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="map-display">
+    <template>
+        <style>
+            #mapWrapper{
+                position: absolute;
+                width              : 100%;
+                height             : 100%;
+                background-color   : green;
+                -webkit-transition : 1s ease-in-out;
+                -moz-transition    : 1s ease-in-out;
+                -o-transition      : 1s ease-in-out;
+                transition         : 1s ease-in-out;
+                z-index: -1;
+            }
+            .hidden{
+                opacity: 0;
+            }
+        </style>
+        <div id="mapWrapper" class="hidden">
+
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is : "map-display",
+            properties: {
+
+            },
+            show : function(){
+                this.$.mapWrapper.className="";
+            }
+        });
+    </script>
+</dom-module>
