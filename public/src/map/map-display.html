@@ -19,17 +19,42 @@
             }
         </style>
         <div id="mapWrapper" class="hidden">
-
+            <template is="dom-repeat" items="{{cells}}">
+                
+            </template>
         </div>
     </template>
     <script>
         Polymer({
             is : "map-display",
             properties: {
-
+                cols: {
+                    type: Number,
+                    value: 0
+                },
+                rows: {
+                    type: Number,
+                    value: 0
+                },
+                cells: {
+                    type: Array,
+                    value: []
+                }
             },
             show : function(){
                 this.$.mapWrapper.className="";
+            },
+            setDimensions: function(c, r){
+                this.cols = c;
+                this.rows = r;
+                for (var i = 0; i < c; i++) {
+                    for (var j = 0; j < r; j++) {
+                        this.cells[i][w]={
+                            "team" : {},
+                            "form" : {}
+                        };
+                    }
+                }
             }
         });
     </script>
