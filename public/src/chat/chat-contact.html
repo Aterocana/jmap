@@ -3,12 +3,6 @@
 <dom-module id="chat-contact">
     <template>
         <style>
-            @media only screen and (max-width : 540px) {
-                .chat-popup {
-                    display: none !important;
-                }
-            }
-
             .sidebar-name {
                 padding-top: 10px;
                 padding-left: 10px;
@@ -74,9 +68,6 @@
 
         ready: function() {
             this.$.name.setAttribute("style", "color: "+this.contactColor+";");
-            this.register_popup = function(){
-                window.alert("ciao");
-            };
         },
 
         setContact : function(user){

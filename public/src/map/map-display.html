@@ -19,9 +19,17 @@
             }
         </style>
         <div id="mapWrapper" class="hidden">
-            <template is="dom-repeat" items="{{cells}}">
-                
+            <table>
+                <template is="dom-repeat" items="{{cells}}" as="column">
+                    <tr>
+                        <template is="dom-repeat" items="{{columns}}" as="cell">
+                            <td>
+                                test{{cell.team}}-{{cell.form}}
+                            </td>
+                        </template>
+                    </tr>
             </template>
+        </table>
         </div>
     </template>
     <script>
@@ -41,6 +49,10 @@
                     value: []
                 }
             },
+            ready: function(){
+                this.cells=[];
+                this.setDimensions(5,6);
+            },
             show : function(){
                 this.$.mapWrapper.className="";
             },
@@ -48,13 +60,15 @@
                 this.cols = c;
                 this.rows = r;
                 for (var i = 0; i < c; i++) {
+                    this.cells[i]=[];
                     for (var j = 0; j < r; j++) {
-                        this.cells[i][w]={
-                            "team" : {},
-                            "form" : {}
+                        this.cells[i][j]={
+                            "team" : null,
+                            "form" : null
                         };
                     }
                 }
+                console.log(this.cells);
             }
         });
     </script>
