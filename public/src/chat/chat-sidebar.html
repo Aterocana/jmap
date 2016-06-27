@@ -8,7 +8,7 @@
 <link rel="import" href="/src/chat/chat-contact.html">
 <link rel="import" href="/src/chat/chat-element.html">
 
-<dom-module id="chat-sidebar">
+<dom-module id="chat-sidebar" on-slided-out="logger">
     <template>
         <style>
             @media only screen and (max-width : 650px) {
@@ -124,105 +124,109 @@
                 </paper-input>
             </div>
         </div>
-</template>
+    </template>
 
-<script>
-    Polymer({
-        is: "chat-sidebar",
+    <script>
+        Polymer({
+            is: "chat-sidebar",
 
-        properties: {
-            /*Utenti connessi*/
-            users : {
-                type  : Object,
-                value : {}
-            },
-            /*Messaggi inviati*/
-            messages : {
-                type  : Object,
-                value : {}
-            },
-            /*funzione per mandare i messaggi tramite i socket*/
-            sendMessage : {
-                type  : Function,
-                value : function(){}
-            },
-            /*booleano per indicare se la sidebar della chat è visibile*/
-            expanded : {
-                type  : Boolean,
-                value : true
-            },
-            /*funzione per espandere o minimizzare la sidebar della chat*/
-            transition : {
-                type  : Function,
-                value : function(){}
-            },
-            /*variabile che indica il contenuto della riga di chat da inviare*/
-            message : {
-                type  : String,
-                value : ""
-            },
-            /*funzione che restituisce l'elemento su cui è attivo il listener per il tasto ENTER*/
-            target : {
-                type : Object,
-                value : function(){
-                    return this.$.message;
+            properties: {
+                /*Utenti connessi*/
+                users : {
+                    type  : Object,
+                    value : {}
+                },
+                /*Messaggi inviati*/
+                messages : {
+                    type  : Object,
+                    value : {}
+                },
+                /*funzione per mandare i messaggi tramite i socket*/
+                sendMessage : {
+                    type  : Function,
+                    value : function(){}
+                },
+                /*booleano per indicare se la sidebar della chat è visibile*/
+                expanded : {
+                    type  : Boolean,
+                    value : true
+                },
+                /*funzione per espandere o minimizzare la sidebar della chat*/
+                transition : {
+                    type  : Function,
+                    value : function(){}
+                },
+                /*variabile che indica il contenuto della riga di chat da inviare*/
+                message : {
+                    type  : String,
+                    value : ""
+                },
+                /*funzione che restituisce l'elemento su cui è attivo il listener per il tasto ENTER*/
+                target : {
+                    type : Object,
+                    value : function(){
+                        return this.$.message;
+                    }
                 }
-            }
-        },
+            },
 
-        ready: function() {
-            var e = this.$;
-            this.expanded = true;
-            this.users = {};
-            this.message = "";
-
-            this.transition = function(){
-                if(this.expanded){
-                    this.$.chatWrapper.className = "minimized";
-                }
-                else{
-                    this.$.chatWrapper.className = "";
-                }
-                this.expanded = !this.expanded;
-            }.bind(this);
-        },
-
-        setUsers : function(users){
-            this.users = users;
-        },
-
-        setMessages : function(messages){
-            this.messages = messages;
-        },
-
-        addMessage : function(msg){
-            this.messages[msg.time];
-        },
-
-        slideIn : function(){
-            this.$.chatWrapper.className = "";
-        },
-
-        setSendMessage : function(fn){
-            this.sendMessage = function(){
-                console.log("sending: ", this.message);
-                var data = {
-                    "msg" : this.message
-                };
+            ready: function() {
+                var e = this.$;
+                this.expanded = true;
+                this.users = {};
                 this.message = "";
-                fn(data);
-            }.bind(this);
-        },
 
-        _toArray: function(obj) {
-            return Object.keys(obj).map(function(key) {
-                return {
-                    id: key,
-                    value: obj[key]
-                };
-            });
-        }
-    });
-</script>
+                this.transition = function(){
+                    if(this.expanded){
+                        this.$.chatWrapper.className = "minimized";
+                    }
+                    else{
+                        this.$.chatWrapper.className = "";
+                    }
+                    this.expanded = !this.expanded;
+                }.bind(this);
+            },
+
+            setUsers : function(users){
+                this.users = users;
+            },
+
+            setMessages : function(messages){
+                this.messages = messages;
+            },
+
+            addMessage : function(msg){
+                this.messages[msg.time];
+            },
+
+            slideIn : function(){
+                this.$.chatWrapper.className = "";
+            },
+
+            setSendMessage : function(fn){
+                this.sendMessage = function(){
+                    console.log("sending: ", this.message);
+                    var data = {
+                        "msg" : this.message
+                    };
+                    this.message = "";
+                    fn(data);
+                }.bind(this);
+            },
+
+            _toArray: function(obj) {
+                return Object.keys(obj).map(function(key) {
+                    return {
+                        id: key,
+                        value: obj[key]
+                    };
+                });
+            },
+
+            logger : function(e){
+                console.log(e);
+            }
+        });
+    </script>
 
 </dom-module>

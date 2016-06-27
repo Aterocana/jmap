@@ -8,8 +8,8 @@ socket.on('connect', function(){
     /* imposto il socket a cui mandare i cambiamenti degli utenti*/
     loginForm.attachListener(function(){
         socket.emit('userChanged', loginForm.getUser());
-        chatSidebar.slideIn();
         loginForm.slideOut();
+        chatSidebar.slideIn();
         mapDisplay.show();
     });
     /* imposto il socket a cui mandare i nuovi messaggi*/

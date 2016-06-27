@@ -87,50 +87,61 @@
                 </div>
             </form>
         </div>
-</template>
+    </template>
 
-<script>
-    Polymer({
-        is: "login-form",
+    <script>
+        Polymer({
+            is: "login-form",
 
-        properties : {
-            name : {
-                type  : String,
-                value : ""
+            properties : {
+                name : {
+                    type  : String,
+                    value : ""
+                },
+                color : {
+                    type  : String,
+                    value : ""
+                },
+                admin : {
+                    type  : Boolean,
+                    value : false
+                },
+                submit : {
+                    type  : Function,
+                    value : function(){}
+                },
+                setSocket : {
+                    type  : Function,
+                    value : function(){}
+                }
             },
-            color : {
-                type  : String,
-                value : ""
+
+            ready : function(){
             },
-            admin : {
-                type  : Boolean,
-                value : false
+
+            getUser: function(){
+                return {
+                    'name'  : this.name,
+                    'color' : this.$.colorSlider.generateColor(),
+                    'admin' : this.$.admin.checked
+                };
             },
-            submit : {
-                type  : Function,
-                value : function(){}
+
+            setSocket: function(socket){
+                this.socket = socket;
+            },
+
+            slideOut: function(){
+                this.$.mainWrapper.className = "loginForm out";
+                this.fire('slidedOut', {
+                    'slided' : true
+                });
+            },
+
+            attachListener: function(fn){
+                this.submit = fn;
             }
-        },
-
-        ready : function(){
-        },
-
-        getUser: function(){
-            return {
-                'name'  : this.name,
-                'color' : this.$.colorSlider.generateColor(),
-                'admin' : this.$.admin.checked
-            }
-        },
-
-        slideOut: function(){
-            this.$.mainWrapper.className = "loginForm out";
-        },
-
-        attachListener: function(fn){
-            this.submit = fn;
-        }
-    });
-</script>
+        });
+    </script>
 
 </dom-module>
