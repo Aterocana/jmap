@@ -4,32 +4,40 @@
     <template>
         <style>
             #mapWrapper{
-                position: absolute;
+                position           : absolute;
                 width              : 100%;
                 height             : 100%;
-                background-color   : green;
-                -webkit-transition : 1s ease-in-out;
-                -moz-transition    : 1s ease-in-out;
-                -o-transition      : 1s ease-in-out;
-                transition         : 1s ease-in-out;
-                z-index: -1;
+                /*background-color   : green;*/
+                -webkit-transition : all 1s ease-in-out;
+                -moz-transition    : all 1s ease-in-out;
+                -o-transition      : all 1s ease-in-out;
+                transition         : all 1s ease-in-out;
+                z-index            : 1;
             }
             .hidden{
-                opacity: 0;
+                opacity    : 0;
+                visibility : hidden;
+            }
+            .cell{
+                /*width         : 10%;*/
+                position        : absolute;
+                cursor          : pointer;
+                background-color: green;
+                -webkit-transition: 0.7s ease-in-out;
+                -moz-transition   : 0.7s ease-in-out;
+                -o-transition     : 0.7s ease-in-out;
+                transition        : 0.7s ease-in-out;
+            }
+            .cell:before{
+                content: "";
+                display: block;
+                padding-top: 100%;
+            }
+            .cell:hover{
+                background-color: rgba(0, 255, 0, 0.4);
             }
         </style>
         <div id="mapWrapper" class="hidden">
-            <table>
-                <template is="dom-repeat" items="{{cells}}" as="column">
-                    <tr>
-                        <template is="dom-repeat" items="{{columns}}" as="cell">
-                            <td>
-                                test{{cell.team}}-{{cell.form}}
-                            </td>
-                        </template>
-                    </tr>
-            </template>
-        </table>
         </div>
     </template>
     <script>
@@ -47,28 +55,87 @@
                 cells: {
                     type: Array,
                     value: []
+                },
+                socket: {
+                    type: Object
+                },
+                setSocket: {
+                    type: Function
                 }
             },
             ready: function(){
                 this.cells=[];
-                this.setDimensions(5,6);
+                this.setDimensions(8, 5);
+                this.generateTable();
             },
             show : function(){
                 this.$.mapWrapper.className="";
             },
+            setSocket: function(socket){
+                this.socket = socket;
+            },
             setDimensions: function(c, r){
                 this.cols = c;
                 this.rows = r;
-                for (var i = 0; i < c; i++) {
-                    this.cells[i]=[];
-                    for (var j = 0; j < r; j++) {
-                        this.cells[i][j]={
-                            "team" : null,
-                            "form" : null
-                        };
+            },
+            generateTable: function(){
+                var w = window,
+                    d = document,
+                    e = d.documentElement,
+                    g = d.getElementsByTagName('body')[0],
+                    x = w.innerWidth || e.clientWidth || g.clientWidth,
+                    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+                //dimensione in percentuale di un quadrato
+                var squareSize = 100/this.cols;
+                //dimensione in px di un quadrato
+                var distance = x/this.cols;
+                this.cells=[];
+                for (var i = 0; i < this.cols; i++) {
+                    this.cells[i] = [];
+                    for (var j = 0; j < this.rows; j++) {
+                        var c = document.createElement("div");
+                        this.cells[i][j] = c;
+                        this.$.mapWrapper.appendChild(c);
+                        c.id='c'+j+i;
+                        c.className += "cell";
+                        //calcolo gli offset di posizionamento del quadrato corrente
+                		var topPosition = j * distance;
+                		var leftPosition = i * distance;
+
+                        //dimensione del quadrato (l'altezza è data dalle regole css)
+                        c.style.width = squareSize+'%';
+
+                        //posiziono il quadrato corrente rispetto all'offset corrispondente
+                		c.style.top = topPosition + 'px';
+                		c.style.left = leftPosition + 'px';
+
+                        this.clickListener(i, j);
                     }
                 }
-                console.log(this.cells);
+            },
+            repaintTable: function(){
+                var w = window,
+                    d = document,
+                    e = d.documentElement,
+                    g = d.getElementsByTagName('body')[0],
+                    x = w.innerWidth || e.clientWidth || g.clientWidth,
+                    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+                var distance = x/this.cols;
+                var c;
+                for (var i = 0; i < this.cols; i++) {
+                    for (var j = 0; j < this.rows; j++) {
+                        var topPosition = j * distance;
+                		var leftPosition = i * distance;
+                        this.cells[i][j].style.top = topPosition + 'px';
+                        this.cells[i][j].style.left = leftPosition + 'px';
+                    }
+                }
+            },
+            clickListener: function(i, j){
+                this.cells[i][j].addEventListener('click', function(e){
+                    console.log(i+", "+j);
+                    console.log(this.socket);
+                }.bind(this));
             }
         });
     </script>

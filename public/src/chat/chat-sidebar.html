@@ -30,14 +30,16 @@
                 top              : 0px;
                 bottom           : 0px;
                 /*border         : 1px solid rgba(29, 49, 91, .3);*/
-                background-color : rgba(255, 255, 255, 1);
                 box-shadow       : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                z-index: 2;
             }
             #chatWrapper.minimized {
                 right : -390px;
             }
+            #chatWrapper, .chat-show-wrapper{
+                background-color : rgba(255, 255, 255, 0.9);
+            }
             .chat-show-wrapper {
-                background-color : rgba(255, 255, 255, 1);
                 position         : fixed;
                 right            : 400px;
                 border-radius    : 25px 0px 0px 25px;

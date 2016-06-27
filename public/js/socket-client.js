@@ -21,6 +21,8 @@ socket.on('connect', function(){
     //     socket.emit('newObj', objectiveForm.getObjective());
     // });
 
+    mapDisplay.setSocket(socket);
+
     socket.on('updateUsers', function(data){
         // inoltro gli utenti aggiornati
         chatSidebar.setUsers(data);
