@@ -29,6 +29,9 @@ module.exports = function(io){
                 socket.join('chat');
                 socket.emit('msg', messages);
             }
+            else{
+                socket.join('admin');
+            }
             //informa i precedenti utenti dei cambiamenti
             socket.broadcast.emit('updateUsers', clientsMap);
             //informa il nuovo utente di tutti gli utenti del sistema
@@ -38,11 +41,14 @@ module.exports = function(io){
         //aggiunta di un obiettivo
         socket.on('newObj', function(data){
             console.log("SERVER received newObj", data);
-            if(!clientsMap[socket.id].admin){
-                clientsMap[socket.id].objectives.push(data);
-                socket.broadcast.emit('updateUsers', clientsMap);
-                socket.emit('updateUsers', clientsMap);
-            }
+            // if(!clientsMap[socket.id].admin){
+            //     clientsMap[socket.id].objectives.push(data);
+            //     socket.broadcast.emit('updateUsers', clientsMap);
+            //     socket.emit('updateUsers', clientsMap);
+            // }
+            socket.broadcast.emit('newObj', data);
+            socket.emit('newObj', data);
+
         });
 
         //rimozione di un obiettivo

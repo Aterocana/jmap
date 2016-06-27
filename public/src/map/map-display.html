@@ -56,9 +56,6 @@
                     type: Array,
                     value: []
                 },
-                socket: {
-                    type: Object
-                },
                 setSocket: {
                     type: Function
                 }
@@ -73,6 +70,9 @@
             },
             setSocket: function(socket){
                 this.socket = socket;
+                this.socket.on('newObj', function(data){
+                    console.log(data);
+                });
             },
             setDimensions: function(c, r){
                 this.cols = c;
@@ -133,8 +133,7 @@
             },
             clickListener: function(i, j){
                 this.cells[i][j].addEventListener('click', function(e){
-                    console.log(i+", "+j);
-                    console.log(this.socket);
+                    this.socket.emit('newObj', {'col':i, 'row':j});
                 }.bind(this));
             }
         });
