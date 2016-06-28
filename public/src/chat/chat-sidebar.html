@@ -8,7 +8,7 @@
 <link rel="import" href="/src/chat/chat-contact.html">
 <link rel="import" href="/src/chat/chat-element.html">
 
-<dom-module id="chat-sidebar" on-slided-out="logger">
+<dom-module id="chat-sidebar">
     <template>
         <style>
             @media only screen and (max-width : 650px) {
@@ -120,7 +120,7 @@
                 <iron-a11y-keys id="a11y" target="[[target]]" keys="enter"
                     on-keys-pressed="sendMessage"></iron-a11y-keys>
                 <paper-input label="Send a message" name="message" id="message" value="{{message}}" no-label-float>
-                    <paper-icon-button suffix onclick="{{sendMessage}}" icon="send" alt="send" title="send" class="send-button"></paper-icon-button>
+                    <paper-icon-button suffix on-click="sendMessage" icon="send" alt="send" title="send" class="send-button"></paper-icon-button>
                 </paper-input>
             </div>
         </div>
@@ -143,8 +143,7 @@
                 },
                 /*funzione per mandare i messaggi tramite i socket*/
                 sendMessage : {
-                    type  : Function,
-                    value : function(){}
+                    type  : Function
                 },
                 /*booleano per indicare se la sidebar della chat è visibile*/
                 expanded : {
@@ -195,6 +194,18 @@
                 this.messages = messages;
             },
 
+            setSocket : function(socket){
+                this.socket = socket;
+                this.socket.on('updateUsers', function(data){
+                    this.setUsers(data);
+                    console.log('updateUsers', data);
+                }.bind(this));
+                this.socket.on('msg', function(data){
+                    console.log(data);
+                    this.setMessages(data);
+                }.bind(this));
+            },
+
             addMessage : function(msg){
                 this.messages[msg.time];
             },
@@ -203,15 +214,13 @@
                 this.$.chatWrapper.className = "";
             },
 
-            setSendMessage : function(fn){
-                this.sendMessage = function(){
-                    console.log("sending: ", this.message);
-                    var data = {
-                        "msg" : this.message
-                    };
-                    this.message = "";
-                    fn(data);
-                }.bind(this);
+            sendMessage : function(){
+                console.log("sending: ", this.message);
+                var data = {
+                    "msg" : this.message
+                };
+                this.message = "";
+                this.socket.emit('msg', data);
             },
 
             _toArray: function(obj) {
