@@ -133,12 +133,16 @@
 
             slideOut: function(callback){
                 this.$.mainWrapper.className = "loginForm out";
-                callback();
+                if(callback){
+                    return callback();
+                }
             },
 
             submit : function(callback){
                 this.socket.emit('userChanged', this.getUser());
-                callback();
+                if(callback){
+                    return callback();
+                }
             },
 
             attachListener: function(fn){
