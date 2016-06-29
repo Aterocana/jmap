@@ -1,31 +1,108 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="map-cell">
     <template>
         <style>
             .wrapper{
                 position: absolute;
-                top: 0%;
-                left: 0%;
-                right: 0%;
-                bottom: 0%;
-                padding: 3%;
-                border: 1px solid black;
+                top     : 0%;
+                left    : 0%;
+                right   : 0%;
+                bottom  : 0%;
+                padding : 3%;
+                border  : 1px solid black;
             }
+            #popup{
+                z-index: 3;
+            }
+            #popup{
+                position              : fixed;
+                background-color      : rgba(255, 255, 255, 1);;
+                visibility            : hidden;
+                opacity               : 0;
+                z-index               : 3;
+                width                 : 90%;
+                height                : 90%;
+                top                   : 5%;
+                left                  : 5%;
+                -webkit-transition    : all 0.5s ease-in-out;
+                -moz-transition       : all 0.5s ease-in-out;
+                -o-transition         : all 0.5s ease-in-out;
+                transition            : all 0.5s ease-in-out;
+                -webkit-box-shadow    : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -moz-box-shadow       : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -o-box-shadow         : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                box-shadow            : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -webkit-border-radius : 5px;
+                -mox-border-radius    : 5px;
+                -o-border-radius      : 5px;
+                border-radius         : 5px;
+            }
+            #popup.show{
+                visibility: visible;
+                opacity: 1;
+            }
+            @media screen and (min-width: 640px) {
+                #popup{
+                    width : 40vw;
+                    height: 30vw;
+                    top   : 5%;
+                    left  : 5%;
+                }
+            }
+            /*@media screen and (min-width: 1200px) {
+                #popup{
+                    width : 20%;
+                    height: 20%;
+                    top   : 10%;
+                    left  : 10%;
+                }
+            }*/
         </style>
-        <div class="wrapper">
-            {{content}}
+        <div class="wrapper" on-click="clickListener">
+            ({{col}}, {{row}})            
         </div>
+        <div id="popup"></div>
     </template>
     <script>
         var MapCell = Polymer({
             is: 'map-cell',
             properties: {
             },
-            factoryImpl: function(content, socket){
-                this.content = content;
-                this.socket = socket;
+            factoryImpl: function(col, row, totalCols, totalRows, socket){
+                this.col       = col;
+                this.row       = row;
+                //Le dimensioni massime della tabella mi occorrono per capire dove posizionare i popups
+                this.totalCols = totalCols;
+                this.totalRows = totalRows;
+                this.socket    = socket;
             },
+            ready: function(){
+                if(this.col < (this.totalCols/2)){
+
+                }
+            },
+            clickListener: function(i, j){
+                this.socket.emit('newObj', {'col':this.col, 'row':this.row});
+                // this.$.popup.className="show";
+            },
+            allowDrop: function(ev) {
+                ev.preventDefault();
+                console.log('allowDrop');
+            },
+
+            drag: function(ev) {
+                ev.dataTransfer.setData("text", ev.target.id);
+                console.log('drag');
+            },
+
+            drop: function(ev) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                ev.target.appendChild(document.getElementById(data));
+                console.log('drop');
+            }
         });
     </script>
 </dom-module>
