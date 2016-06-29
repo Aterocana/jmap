@@ -1,4 +1,5 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/src/map/map-cell.html">
 
 <dom-module id="map-display">
     <template>
@@ -32,6 +33,7 @@
                 content: "";
                 display: block;
                 padding-top: 100%;
+                /*padding-left: 100%;*/
             }
             .cell:hover{
                 background-color: rgba(0, 255, 0, 0.4);
@@ -63,13 +65,14 @@
             ready: function(){
                 this.cells=[];
                 this.setDimensions(8, 5);
-                this.generateTable();
             },
             show : function(){
                 this.$.mapWrapper.className="";
             },
             setSocket: function(socket){
                 this.socket = socket;
+                //Genero la tabella solo quando sono in possesso del socket, così da inoltrarlo alla varie celle
+                this.generateTable();
                 this.socket.on('newObj', function(data){
                     console.log(data);
                 });
@@ -77,8 +80,11 @@
             setDimensions: function(c, r){
                 this.cols = c;
                 this.rows = r;
+                //rigenero la tabella con le nuove dimensioni
+                this.generateTable();
             },
             generateTable: function(){
+                this.destroyTable();
                 var w = window,
                     d = document,
                     e = d.documentElement,
@@ -90,10 +96,13 @@
                 //dimensione in px di un quadrato
                 var distance = x/this.cols;
                 this.cells=[];
+                var counter=0;
                 for (var i = 0; i < this.cols; i++) {
                     this.cells[i] = [];
                     for (var j = 0; j < this.rows; j++) {
                         var c = document.createElement("div");
+                        var mapCell = new MapCell(i+", "+j, this.socket);
+                        c.appendChild(mapCell);
                         this.cells[i][j] = c;
                         this.$.mapWrapper.appendChild(c);
                         c.id='c'+j+i;
@@ -129,6 +138,11 @@
                         this.cells[i][j].style.top = topPosition + 'px';
                         this.cells[i][j].style.left = leftPosition + 'px';
                     }
+                }
+            },
+            destroyTable: function(){
+                while (this.$.mapWrapper.firstChild) {
+                    this.$.mapWrapper.removeChild(this.$.mapWrapper.firstChild);
                 }
             },
             clickListener: function(i, j){

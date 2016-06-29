@@ -91,7 +91,6 @@
                 /*border-top       : 1px solid rgba(29, 49, 91, .3);*/
                 padding          : 0px 20px;
             }
-
             .send-button {
                 color : var(--paper-indigo-500);
             }
@@ -146,9 +145,12 @@
                     type  : Function
                 },
                 /*booleano per indicare se la sidebar della chat è visibile*/
-                expanded : {
+                expandedSidebar : {
                     type  : Boolean,
-                    value : true
+                    value : false
+                },
+                setExpandedSidebar:{
+                    type: Function
                 },
                 /*funzione per espandere o minimizzare la sidebar della chat*/
                 transition : {
@@ -171,19 +173,22 @@
 
             ready: function() {
                 var e = this.$;
-                this.expanded = true;
                 this.users = {};
                 this.message = "";
 
                 this.transition = function(){
-                    if(this.expanded){
+                    if(this.expandedSidebar){
                         this.$.chatWrapper.className = "minimized";
                     }
                     else{
                         this.$.chatWrapper.className = "";
                     }
-                    this.expanded = !this.expanded;
+                    this.expandedSidebar = !this.expandedSidebar;
                 }.bind(this);
+            },
+
+            setExpandedSidebar : function(bool){
+                this.expandedSidebar = bool;
             },
 
             setUsers : function(users){
@@ -211,7 +216,13 @@
             },
 
             slideIn : function(){
-                this.$.chatWrapper.className = "";
+                if(!this.expandedSidebar){
+                    this.$.chatWrapper.className = "minimized";
+                }
+                else {
+                    this.$.chatWrapper.className = "";
+                }
+                // this.$.chatWrapper.className = "";
             },
 
             sendMessage : function(){
@@ -230,10 +241,6 @@
                         value: obj[key]
                     };
                 });
-            },
-
-            logger : function(e){
-                console.log(e);
             }
         });
     </script>

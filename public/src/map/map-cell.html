@@ -1,0 +1,31 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="map-cell">
+    <template>
+        <style>
+            .wrapper{
+                position: absolute;
+                top: 0%;
+                left: 0%;
+                right: 0%;
+                bottom: 0%;
+                padding: 3%;
+                border: 1px solid black;
+            }
+        </style>
+        <div class="wrapper">
+            {{content}}
+        </div>
+    </template>
+    <script>
+        var MapCell = Polymer({
+            is: 'map-cell',
+            properties: {
+            },
+            factoryImpl: function(content, socket){
+                this.content = content;
+                this.socket = socket;
+            },
+        });
+    </script>
+</dom-module>
