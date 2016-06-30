@@ -71,9 +71,9 @@ module.exports = function(io){
         socket.on('removeObj', function(obj){
             console.log("SERVER received removeObj", obj);
             // cerco l'oggetto indice nell'array degli obiettivi
-            let objItem = objectives[obj.id];
-            if(objItem.index !== -1){
-                clientsMap[objItem.user].objectives.splice(i, 1);
+            let objIndex = objectives[obj.id];
+            if(objIndex.index !== -1){
+                clientsMap[objIndex.user].objectives.splice(i, 1);
                 objectives[obj.id].index = -1;
                 socket.broadcast.emit('updateUsers', clientsMap);
                 socket.emit('updateUsers', clientsMap);
@@ -87,6 +87,17 @@ module.exports = function(io){
             //     socket.emit('updateUsers', clientsMap);
             // }
 
+        });
+
+        //riposizionamento di un obiettivo
+        socket.on('newPosition', function(data){
+            console.log('SERVER received newPosition', data);
+            let objIndex = objectiveIndexes[data.id];
+            if(objIndex !== -1){
+                console.log(clientsMap[objIndex.user]);
+                socket.emit('newPosition', data);
+                socket.broadcast.emit('newPosition', data);
+            }
         });
 
         //messaggio di chat

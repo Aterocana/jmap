@@ -1,3 +1,4 @@
+var objID;
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -9,7 +10,8 @@ function drag(ev) {
     // var img = new Image();
     // img.src = './dancing-banana.gif';
     // ev.dataTransfer.setDragImage(img, 100, 100);
-    console.log('drag#'+ev.target.id);
+    objID = ev.path[2].id;
+    console.log('drag#'+objID);
     console.log(ev);
     console.log("muovo: ");
     console.log(ev.path[0]);
@@ -20,7 +22,13 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     console.log("arrivo");
-    console.log(ev.path[3]);
+    socket.emit('newPosition', {
+        'id' : objID,
+        'target' : {
+            'col' : ev.path[3].id.charAt(2),
+            'row' : ev.path[3].id.charAt(1)
+        }
+    });
     // var data = ev.dataTransfer.getData("text");
     // ev.target.appendChild(document.getElementById(data));
 
