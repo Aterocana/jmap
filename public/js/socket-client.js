@@ -24,4 +24,7 @@ socket.on('connect', function(){
         console.log('c'+obj.data.col+obj.data.row);
         mapDisplay.getElement(obj.data.col, obj.data.row).appendChild(newObj);
     });
+    socket.on('newPosition', function(obj){
+        
+    });
 });
