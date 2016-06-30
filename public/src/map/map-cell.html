@@ -1,5 +1,4 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="map-cell">
     <template>
@@ -60,8 +59,8 @@
                 }
             }*/
         </style>
-        <div class="wrapper" on-click="clickListener">
-            ({{col}}, {{row}})            
+        <div class="wrapper" on-click="clickListener" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="enter(event)">
+            ({{col}}, {{row}})
         </div>
         <div id="popup"></div>
     </template>

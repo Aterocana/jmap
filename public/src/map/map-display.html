@@ -38,6 +38,14 @@
             .cell:hover{
                 background-color: rgba(0, 255, 0, 0.4);
             }
+            .obj {
+                top: 0px;
+                width: 50px;
+                height: 50px;
+                background-color: red;
+                z-index: 3;
+                position: absolute;
+            }
         </style>
         <div id="mapWrapper" class="hidden">
         </div>
@@ -60,6 +68,12 @@
                 },
                 setSocket: {
                     type: Function
+                },
+                getDistance: {
+                    type: Function
+                },
+                getElement: {
+                    type: Function
                 }
             },
             ready: function(){
@@ -76,6 +90,12 @@
                 this.socket.on('newObj', function(data){
                     console.log(data);
                 });
+            },
+            getDistance: function(){
+                return this.distance;
+            },
+            getElement: function(c, r){
+                return this.cells[c][r];
             },
             setDimensions: function(c, r){
                 this.cols = c;
@@ -94,7 +114,7 @@
                 //dimensione in percentuale di un quadrato
                 var squareSize = 100/this.cols;
                 //dimensione in px di un quadrato
-                var distance = x/this.cols;
+                this.distance = x/this.cols;
                 this.cells=[];
                 var counter=0;
                 for (var i = 0; i < this.cols; i++) {
@@ -108,8 +128,8 @@
                         c.id='c'+j+i;
                         c.className += "cell";
                         //calcolo gli offset di posizionamento del quadrato corrente
-                		var topPosition = j * distance;
-                		var leftPosition = i * distance;
+                		var topPosition = j * this.distance;
+                		var leftPosition = i * this.distance;
 
                         //dimensione del quadrato (l'altezza è data dalle regole css)
                         c.style.width = squareSize+'%';
@@ -127,12 +147,12 @@
                     g = d.getElementsByTagName('body')[0],
                     x = w.innerWidth || e.clientWidth || g.clientWidth,
                     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-                var distance = x/this.cols;
+                this.distance = x/this.cols;
                 var c;
                 for (var i = 0; i < this.cols; i++) {
                     for (var j = 0; j < this.rows; j++) {
-                        var topPosition = j * distance;
-                		var leftPosition = i * distance;
+                        var topPosition = j * this.distance;
+                		var leftPosition = i * this.distance;
                         this.cells[i][j].style.top = topPosition + 'px';
                         this.cells[i][j].style.left = leftPosition + 'px';
                     }

@@ -1,6 +1,8 @@
 module.exports = function(io){
-    let clientsMap = {};
-    let messages = {};
+    let clientsMap       = {};
+    let messages         = {};
+    let objectiveIndexes = [];
+    let objCounter       = 0;
 
     io.sockets.on('connection', function(socket){
         // clientsMap[socket.id] = {};
@@ -39,27 +41,51 @@ module.exports = function(io){
         });
 
         //aggiunta di un obiettivo
-        socket.on('newObj', function(data){
-            console.log("SERVER received newObj", data);
-            // if(!clientsMap[socket.id].admin){
-            //     clientsMap[socket.id].objectives.push(data);
-            //     socket.broadcast.emit('updateUsers', clientsMap);
-            //     socket.emit('updateUsers', clientsMap);
-            // }
-            socket.broadcast.emit('newObj', data);
-            socket.emit('newObj', data);
+        socket.on('newObj', function(obj){
+            console.log("SERVER received newObj #"+(++objCounter)+": "+ obj);
+            if(!clientsMap[socket.id].admin){
+                clientsMap[socket.id].objectives.push(obj);
+                // socket.broadcast.emit('updateUsers', clientsMap);
+                // socket.emit('updateUsers', clientsMap);
+            }
+            let newObj = {};
+            newObj.data = obj;
+            newObj.owner = {
+                'name'  : clientsMap[socket.id].name,
+                'color' : clientsMap[socket.id].color
+            };
+            newObj.id = objCounter;
+            // creo un oggetto indice, utile per inidicizzare velocemente il proprietario e l'indice dell'obiettivo nell'array objectives del proprietario
+            objectiveIndexes[objCounter] = {
+                'user'  : socket.id,
+                'index' : clientsMap[socket.id].objectives.indexOf(obj)
+            };
+            socket.broadcast.emit('updateUsers', clientsMap);
+            socket.emit('updateUsers', clientsMap);
+            socket.broadcast.emit('newObj', newObj);
+            socket.emit('newObj', newObj);
 
         });
 
         //rimozione di un obiettivo
-        socket.on('removeObj', function(data){
-            console.log("SERVER received removeObj", data);
-            let index = clientsMap[socket.id].objectives.indexOf(data);
-            if(index !== -1){
-                clientsMap[socket.id].objectives.splice(index, 1);
+        socket.on('removeObj', function(obj){
+            console.log("SERVER received removeObj", obj);
+            // cerco l'oggetto indice nell'array degli obiettivi
+            let objItem = objectives[obj.id];
+            if(objItem.index !== -1){
+                clientsMap[objItem.user].objectives.splice(i, 1);
+                objectives[obj.id].index = -1;
                 socket.broadcast.emit('updateUsers', clientsMap);
                 socket.emit('updateUsers', clientsMap);
+                socket.broadcast.emit('removeObj', obj.id);
+                socket.emit('removeObj', obj.id);
             }
+            // let index = clientsMap[socket.id].objectives.indexOf(data);
+            // if(index !== -1){
+            //     clientsMap[socket.id].objectives.splice(index, 1);
+            //     socket.broadcast.emit('updateUsers', clientsMap);
+            //     socket.emit('updateUsers', clientsMap);
+            // }
 
         });
 

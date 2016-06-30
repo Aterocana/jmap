@@ -1,0 +1,36 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="objective-item">
+    <style>
+        .obj {
+            width: 50px;
+            height: 50px;
+            /*background-color: red;*/
+            z-index: 3;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+        }
+    </style>
+    <template>
+        <div class="obj" style="background-color: {{color}}" draggable="true" ondragstart="drag(event)">
+
+        </div>
+    </template>
+    <script>
+        var ObjectiveItem = Polymer({
+            is: 'objective-item',
+            properties: {
+                setColor:{
+                    type: Function,
+                    value: function(color){
+                        this.color = color;
+                    }
+                }
+            },
+            factoryImpl : function(color){
+                this.color = color;
+            }
+        });
+    </script>
+</dom-module>
