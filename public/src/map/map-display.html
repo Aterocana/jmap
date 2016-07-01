@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/src/map/map-cell.html">
+<link rel="import" href="/src/map/objective-container.html">
 
 <dom-module id="map-display">
     <template>
@@ -8,7 +9,7 @@
                 position           : absolute;
                 width              : 100%;
                 height             : 100%;
-                background-color   : green;
+                /*background-color   : green;*/
                 -webkit-transition : all 1s ease-in-out;
                 -moz-transition    : all 1s ease-in-out;
                 -o-transition      : all 1s ease-in-out;
@@ -35,17 +36,6 @@
                 padding-top: 100%;
                 /*padding-left: 100%;*/
             }
-            .cell:hover{
-                background-color: rgba(0, 255, 0, 0.4);
-            }
-            .obj {
-                top: 0px;
-                width: 50px;
-                height: 50px;
-                background-color: red;
-                z-index: 3;
-                position: absolute;
-            }
         </style>
         <div id="mapWrapper" class="hidden">
         </div>
@@ -62,17 +52,7 @@
                     type: Number,
                     value: 0
                 },
-                cells: {
-                    type: Array,
-                    value: []
-                },
                 setSocket: {
-                    type: Function
-                },
-                getDistance: {
-                    type: Function
-                },
-                getElement: {
                     type: Function
                 }
             },
@@ -87,15 +67,45 @@
                 this.socket = socket;
                 //Genero la tabella solo quando sono in possesso del socket, così da inoltrarlo alla varie celle
                 this.generateTable();
-                this.socket.on('newObj', function(data){
+                socket.on('newObj', function(obj){
+                    /**
+                     * obj: {
+                     * 		id: Number,
+                     * 		position: {
+                     * 			col: Number,
+                     * 			row: Number
+                     * 	 	},
+                     * 	 	name : String, TODO
+                     * 	 	shape: String, TODO
+                     * 	 	owner: {
+                     * 	 		name : String,
+                     * 	 		color: String
+                     * 	 	}
+                     * }
+                     */
+                    this.cells[obj.position.col][obj.position.row].children[1].insertObjective(obj);
+                }.bind(this));
+                socket.on('newPosition', function(data){
                     console.log(data);
-                });
+                    /**
+                     * data: {
+                     * 		target: {
+                     * 			col: Number,
+                     * 			row: Number
+                     * 	 	},
+                     * 		oldPosition: {
+                     * 			col: Number,
+                     * 			row: Number
+                     * 	 	},
+                     * 	 	id: Number
+                     * }
+                     */
+                    var oldObj = this.cells[data.oldPosition.col][data.oldPosition.row].children[1].deleteObjective(data.id);
+                    this.cells[data.target.col][data.target.row].children[1].insertObjective(oldObj);
+                }.bind(this));
             },
-            getDistance: function(){
-                return this.distance;
-            },
-            getElement: function(c, r){
-                return this.cells[c][r];
+            deleteObj: function(c, r, id){
+                //TODO
             },
             setDimensions: function(c, r){
                 this.cols = c;
@@ -122,7 +132,9 @@
                     for (var j = 0; j < this.rows; j++) {
                         var c = document.createElement("div");
                         var mapCell = new MapCell(i, j, this.cols, this.rows, this.socket);
+                        var objectiveContainer = new ObjectiveContainer();
                         c.appendChild(mapCell);
+                        c.appendChild(objectiveContainer);
                         this.cells[i][j] = c;
                         this.$.mapWrapper.appendChild(c);
                         c.id='c'+j+i;

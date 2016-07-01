@@ -42,29 +42,37 @@ module.exports = function(io){
 
         //aggiunta di un obiettivo
         socket.on('newObj', function(obj){
-            console.log("SERVER received newObj #"+(++objCounter)+": "+ obj);
+            /**
+             * obj: {
+             * 		position: {
+             * 			col: Number,
+             * 			row: Number
+             * 	 	},
+             * 	 	name: String, TODO
+             * 	 	shape: String TODO
+             * }
+             */
+            objCounter++;
+            console.log(`SERVER received newObj #${objCounter}`);
+            obj.id  = objCounter;
             if(!clientsMap[socket.id].admin){
                 clientsMap[socket.id].objectives.push(obj);
-                // socket.broadcast.emit('updateUsers', clientsMap);
-                // socket.emit('updateUsers', clientsMap);
             }
-            let newObj = {};
-            newObj.data = obj;
+            // creo un oggetto indice, utile per inidicizzare velocemente il proprietario e l'indice dell'obiettivo nell'array objectives del proprietario
+            objectiveIndexes[objCounter] = {
+                'user'  : socket.id,    //indice del proprietario dell'N-esimo obiettivo
+                'index' : clientsMap[socket.id].objectives.indexOf(obj) //indice dell'N-esimo obiettivo nell'array objectives del proprietario
+            };
+            let newObj = (JSON.parse(JSON.stringify(obj))); //creo una nuova istanza copiando l'oggetto obj
             newObj.owner = {
                 'name'  : clientsMap[socket.id].name,
                 'color' : clientsMap[socket.id].color
-            };
-            newObj.id = objCounter;
-            // creo un oggetto indice, utile per inidicizzare velocemente il proprietario e l'indice dell'obiettivo nell'array objectives del proprietario
-            objectiveIndexes[objCounter] = {
-                'user'  : socket.id,
-                'index' : clientsMap[socket.id].objectives.indexOf(obj)
             };
             socket.broadcast.emit('updateUsers', clientsMap);
             socket.emit('updateUsers', clientsMap);
             socket.broadcast.emit('newObj', newObj);
             socket.emit('newObj', newObj);
-
+            console.log(clientsMap[socket.id]);
         });
 
         //rimozione di un obiettivo
@@ -73,7 +81,7 @@ module.exports = function(io){
             // cerco l'oggetto indice nell'array degli obiettivi
             let objIndex = objectives[obj.id];
             if(objIndex.index !== -1){
-                clientsMap[objIndex.user].objectives.splice(i, 1);
+                clientsMap[objIndex.user].objectives.splice(objIndex.index, 1);
                 objectives[obj.id].index = -1;
                 socket.broadcast.emit('updateUsers', clientsMap);
                 socket.emit('updateUsers', clientsMap);
@@ -91,10 +99,24 @@ module.exports = function(io){
 
         //riposizionamento di un obiettivo
         socket.on('newPosition', function(data){
+            /**
+             * data: {
+             * 		target: {
+             * 			col: Number,
+             * 			row: Number
+             * 	 	},
+             * 	 	id: Number
+             * }
+             */
             console.log('SERVER received newPosition', data);
-            let objIndex = objectiveIndexes[data.id];
+            let objIndex = objectiveIndexes[parseInt(data.id)];
             if(objIndex !== -1){
+                let oldPosition  = JSON.parse(JSON.stringify(clientsMap[objIndex.user].objectives[objIndex.index].position));
+                data.oldPosition = oldPosition;
+                delete clientsMap[objIndex.user].objectives[objIndex.index].position;
+                clientsMap[objIndex.user].objectives[objIndex.index].position = data.target;
                 console.log(clientsMap[objIndex.user]);
+                console.log(clientsMap[objIndex.user].objectives[objIndex.index]);
                 socket.emit('newPosition', data);
                 socket.broadcast.emit('newPosition', data);
             }

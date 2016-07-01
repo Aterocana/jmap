@@ -1,0 +1,87 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/src/map/objective-item.html">
+
+<dom-module id="objective-container">
+    <style>
+        .obj {
+            top: 0px;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            z-index: 3;
+            position: absolute;
+        }
+    </style>
+    <template>
+        <div id="wrapper">
+
+        </div>
+    </template>
+    <script>
+        var ObjectiveContainer = Polymer({
+            is: 'objective-container',
+            properties: {
+                objectives: {
+                    type  : Object,
+                    value : {}
+                },
+                elements: {
+                    type  : Object,
+                    value : {}
+                },
+                counter: {
+                    type  : Number,
+                    value : 0
+                }
+            },
+            ready : function(){
+                this.objectives = {};
+                this.elements   = {};
+                this.counter    = 0;
+            },
+            factoryImpl : function(){
+            },
+            insertObjective: function(obj){
+                /**
+                 * obj: {
+                 * 		id: Number,
+                 * 		position: {
+                 * 			col: Number,
+                 * 			row: Number
+                 * 	 	},
+                 * 	 	name : String, TODO
+                 * 	 	shape: String, TODO
+                 * 	 	owner: {
+                 * 	 		name : String,
+                 * 	 		color: String
+                 * 	 	}
+                 * }
+                 */
+                console.log(obj);
+                this.objectives[obj.id] = obj;
+                var newObj              = new ObjectiveItem(obj);
+                this.elements[obj.id]   = newObj;
+                this.$.wrapper.appendChild(newObj);
+                this.counter++;
+            },
+            deleteObjective: function(id){
+                this.elements[id].remove();
+                delete this.elements[id];
+                console.log(this.objectives[id]);
+                var oldObjective = JSON.parse(JSON.stringify(this.objectives[id]));
+                console.log(oldObjective);
+                delete this.objectives[id];
+                this.counter--;
+                return oldObjective;
+            },
+            _toArray: function(obj) {
+                return Object.keys(obj).map(function(key) {
+                    return {
+                        id: key,
+                        value: obj[key]
+                    };
+                });
+            }
+        });
+    </script>
+</dom-module>

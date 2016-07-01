@@ -13,23 +13,34 @@
         }
     </style>
     <template>
-        <div class="obj" style="background-color: {{color}}" draggable="true" ondragstart="drag(event)">
-
+        <div id="{{id}}" class="obj" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)">
         </div>
     </template>
     <script>
         var ObjectiveItem = Polymer({
             is: 'objective-item',
             properties: {
-                setColor:{
-                    type: Function,
-                    value: function(color){
-                        this.color = color;
-                    }
-                }
             },
-            factoryImpl : function(color){
-                this.color = color;
+            factoryImpl : function(obj){
+                /**
+                 * obj: {
+                 * 		id: Number,
+                 * 		position: {
+                 * 			col: Number,
+                 * 			row: Number
+                 * 	 	},
+                 * 	 	name : String, TODO
+                 * 	 	shape: String, TODO
+                 * 	 	owner: {
+                 * 	 		name : String,
+                 * 	 		color: String
+                 * 	 	}
+                 * }
+                 */
+                this.id    = obj.id;
+                this.owner = obj.owner;
+                // this.name  = obj.name; TODO
+                // this.shape = obj.shape; TODO
             }
         });
     </script>
