@@ -8,7 +8,10 @@ module.exports = function(io){
         // clientsMap[socket.id] = {};
         console.log(`User ${socket.id} connected.`);
         console.log(clientsMap);
-        socket.emit('newUser',clientsMap); //send users list on connection
+        socket.emit('newUser',{
+            'clients' : clientsMap,
+            'id'      : socket.id
+        }); //send users list on connection
 
         socket.on('message', function(data){
             console.log("SERVER received message", data);
@@ -66,7 +69,8 @@ module.exports = function(io){
             let newObj = (JSON.parse(JSON.stringify(obj))); //creo una nuova istanza copiando l'oggetto obj
             newObj.owner = {
                 'name'  : clientsMap[socket.id].name,
-                'color' : clientsMap[socket.id].color
+                'color' : clientsMap[socket.id].color,
+                'id'    : socket.id
             };
             socket.broadcast.emit('updateUsers', clientsMap);
             socket.emit('updateUsers', clientsMap);

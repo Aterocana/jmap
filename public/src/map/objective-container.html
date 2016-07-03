@@ -53,11 +53,11 @@
                  * 	 	shape: String, TODO
                  * 	 	owner: {
                  * 	 		name : String,
-                 * 	 		color: String
+                 * 	 		color: String,
+                 * 	 		id   : String
                  * 	 	}
                  * }
                  */
-                console.log(obj);
                 this.objectives[obj.id] = obj;
                 var newObj              = new ObjectiveItem(obj);
                 this.elements[obj.id]   = newObj;
@@ -67,9 +67,7 @@
             deleteObjective: function(id){
                 this.elements[id].remove();
                 delete this.elements[id];
-                console.log(this.objectives[id]);
                 var oldObjective = JSON.parse(JSON.stringify(this.objectives[id]));
-                console.log(oldObjective);
                 delete this.objectives[id];
                 this.counter--;
                 return oldObjective;

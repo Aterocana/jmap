@@ -13,8 +13,7 @@
         }
     </style>
     <template>
-        <div id="{{id}}" class="obj" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)">
-        </div>
+        <div id="{{id}}" class="obj" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)"></div>
     </template>
     <script>
         var ObjectiveItem = Polymer({
@@ -33,14 +32,23 @@
                  * 	 	shape: String, TODO
                  * 	 	owner: {
                  * 	 		name : String,
-                 * 	 		color: String
+                 * 	 		color: String,
+                 * 	 		id   : String
                  * 	 	}
                  * }
                  */
-                this.id    = obj.id;
                 this.owner = obj.owner;
+                console.log(this.owner.id);
+                console.log(userID);
+
                 // this.name  = obj.name; TODO
                 // this.shape = obj.shape; TODO
+            },
+            ready: function(){
+                // console.log("obj"+this.owner.id+" owner? "+this.isOwner());
+            },
+            isOwner : function(){
+                return this.owner.id === userID;
             }
         });
     </script>
