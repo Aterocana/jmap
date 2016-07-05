@@ -72,11 +72,11 @@ module.exports = function(io){
                 'color' : clientsMap[socket.id].color,
                 'id'    : socket.id
             };
+            console.log(newObj);
             socket.broadcast.emit('updateUsers', clientsMap);
             socket.emit('updateUsers', clientsMap);
             socket.broadcast.emit('newObj', newObj);
             socket.emit('newObj', newObj);
-            console.log(clientsMap[socket.id]);
         });
 
         //rimozione di un obiettivo
@@ -114,7 +114,7 @@ module.exports = function(io){
              */
             console.log('SERVER received newPosition', data);
             let objIndex = objectiveIndexes[parseInt(data.id)];
-            if(objIndex !== -1){
+            if(objIndex !== -1 && (clientsMap[socket.id].admin || objIndex.user === socket.id)){
                 let oldPosition  = JSON.parse(JSON.stringify(clientsMap[objIndex.user].objectives[objIndex.index].position));
                 data.oldPosition = oldPosition;
                 delete clientsMap[objIndex.user].objectives[objIndex.index].position;

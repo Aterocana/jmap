@@ -54,6 +54,9 @@
                 },
                 setSocket: {
                     type: Function
+                },
+                importObjectives: {
+                    type: Function
                 }
             },
             ready: function(){
@@ -175,6 +178,28 @@
                 while (this.$.mapWrapper.firstChild) {
                     this.$.mapWrapper.removeChild(this.$.mapWrapper.firstChild);
                 }
+            },
+            importObjectives: function(users){
+                // console.log(this._toArray(users));
+                this._toArray(users).forEach(function(user, index){
+                    user.value.objectives.forEach(function(obj){
+                        var newObj = (JSON.parse(JSON.stringify(obj))); //creo una nuova istanza copiando l'oggetto obj
+                        newObj.owner = {
+                            'name'  : user.value.name,
+                            'color' : user.value.color,
+                            'id'    : user.id
+                        };
+                        this.cells[newObj.position.col][newObj.position.row].children[1].insertObjective(newObj);
+                    });
+                });
+            },
+            _toArray: function(obj) {
+                return Object.keys(obj).map(function(key) {
+                    return {
+                        id: key,
+                        value: obj[key]
+                    };
+                });
             }
         });
     </script>

@@ -3,8 +3,8 @@
 <dom-module id="objective-item">
     <style>
         .obj {
-            width: 50px;
-            height: 50px;
+            width: 45%;
+            height: 45%;
             /*background-color: red;*/
             z-index: 3;
             position: absolute;
@@ -38,9 +38,7 @@
                  * }
                  */
                 this.owner = obj.owner;
-                console.log(this.owner.id);
-                console.log(userID);
-
+                this.id    = obj.id;
                 // this.name  = obj.name; TODO
                 // this.shape = obj.shape; TODO
             },

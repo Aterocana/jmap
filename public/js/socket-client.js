@@ -8,6 +8,7 @@ socket.on('connect', function(){
     /* imposto il socket a cui mandare i cambiamenti degli utenti*/
     socket.on('newUser', function(data){
         userID = data.id;
+        // mapDisplay.importObjectives(data.clients);
     });
     loginForm.attachListener(function(){
         socket.emit('userChanged', loginForm.getUser());
@@ -15,6 +16,6 @@ socket.on('connect', function(){
         chatSidebar.slideIn();
         mapDisplay.show();
     });
-    chatSidebar.setSocket(socket);
     mapDisplay.setSocket(socket);
+    chatSidebar.setSocket(socket);
 });
