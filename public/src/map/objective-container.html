@@ -67,9 +67,9 @@
                     cssClass = "first";
                 }
                 this.objectives[obj.id] = obj;
-                var newObj              = new ObjectiveItem(obj);
+                var newObj              = new ObjectiveItem(obj, cssClass);
                 this.elements[obj.id]   = newObj;
-                newObj.setClass(cssClass);
+                // newObj.setClass(cssClass);
                 this.$.wrapper.appendChild(newObj);
                 this.counter++;
             },
@@ -78,6 +78,26 @@
                 delete this.elements[id];
                 var oldObjective = JSON.parse(JSON.stringify(this.objectives[id]));
                 delete this.objectives[id];
+                this._toArray(this.elements).forEach(function(elem, index){
+                    var cssClass = "";
+                    switch (index) {
+                        case 0:
+                        cssClass = "first";
+                        break;
+                        case 1:
+                        cssClass = "second";
+                        break;
+                        case 2:
+                        cssClass = "third";
+                        break;
+                        case 3:
+                        cssClass = "fourth";
+                        break;
+                        default:
+                        cssClass = "first";
+                    }
+                    elem.value.setClass(cssClass);
+                }.bind(this));
                 this.counter--;
                 return oldObjective;
             },

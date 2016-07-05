@@ -27,7 +27,7 @@
         }
     </style>
     <template>
-        <div id="{{id}}" class="obj first" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)"></div>
+        <div id="{{id}}" class$="obj {{cssClass}}" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)"></div>
     </template>
     <script>
         var ObjectiveItem = Polymer({
@@ -40,7 +40,7 @@
                     type: Function
                 }
             },
-            factoryImpl : function(obj){
+            factoryImpl : function(obj, cssClass){
                 /**
                  * obj: {
                  * 		id: Number,
@@ -61,6 +61,7 @@
                 this.id    = obj.id;
                 // this.name  = obj.name; TODO
                 // this.shape = obj.shape; TODO
+                this.cssClass = cssClass;
             },
             ready: function(){
                 // console.log("obj"+this.owner.id+" owner? "+this.isOwner());
