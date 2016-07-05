@@ -107,6 +107,20 @@
                     var oldObj = this.cells[data.oldPosition.col][data.oldPosition.row].children[1].deleteObjective(data.id);
                     this.cells[data.target.col][data.target.row].children[1].insertObjective(oldObj);
                 }.bind(this));
+                socket.on('removeObj', function(obj){
+                    /**
+                     * obj: {
+                     * 		id: String,
+                     * 		position: {
+                     * 			col: Number,
+                     * 			row: Number
+                     * 	 	},
+                     * 	 	name: String, TODO
+                     * 	 	shape: String TODO
+                     * }
+                     */
+                    this.cells[obj.position.col][obj.position.row].children[1].deleteObjective(obj.id);
+                }.bind(this));
             },
             deleteObj: function(c, r, id){
                 //TODO
@@ -189,9 +203,11 @@
                             'color' : user.value.color,
                             'id'    : user.id
                         };
+                        // console.log(newObj);
+                        // console.log(this.cells);
                         this.cells[newObj.position.col][newObj.position.row].children[1].insertObjective(newObj);
-                    });
-                });
+                    }.bind(this));
+                }.bind(this));
             },
             _toArray: function(obj) {
                 return Object.keys(obj).map(function(key) {

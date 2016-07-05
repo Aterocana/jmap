@@ -137,6 +137,12 @@ module.exports = function(io){
 
         socket.on('disconnect', function() {
             console.log("user",clientsMap[socket.id],"disconnected");
+            let objectives = clientsMap[socket.id].objectives;
+            if(objectives){
+                objectives.forEach(function(obj){
+                    socket.broadcast.emit('removeObj', obj);
+                });
+            }
             // socket.broadcast.emit('quitUser', clientsMap[socket.id]);
             delete clientsMap[socket.id];
             socket.broadcast.emit('updateUsers', clientsMap);
