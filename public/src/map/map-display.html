@@ -90,7 +90,6 @@
                     this.cells[obj.position.col][obj.position.row].children[1].insertObjective(obj);
                 }.bind(this));
                 socket.on('newPosition', function(data){
-                    console.log(data);
                     /**
                      * data: {
                      * 		target: {
@@ -121,9 +120,6 @@
                      */
                     this.cells[obj.position.col][obj.position.row].children[1].deleteObjective(obj.id);
                 }.bind(this));
-            },
-            deleteObj: function(c, r, id){
-                //TODO
             },
             setDimensions: function(c, r){
                 this.cols = c;

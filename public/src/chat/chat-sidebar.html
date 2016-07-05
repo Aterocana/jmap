@@ -19,6 +19,7 @@
             }
             #chatWrapper.hidden{
                 right: -500px;
+                /*transform: rotate(180deg);*/
             }
             #chatWrapper.hidden .chat-show-wrapper{
                 right: -490px;
@@ -204,10 +205,10 @@
                 this.socket = socket;
                 this.socket.on('updateUsers', function(data){
                     this.setUsers(data);
-                    console.log('updateUsers', data);
+                    // console.log('updateUsers', data);
                 }.bind(this));
                 this.socket.on('msg', function(data){
-                    console.log(data);
+                    // console.log(data);
                     this.setMessages(data);
                 }.bind(this));
             },
@@ -223,7 +224,6 @@
                 else {
                     this.$.chatWrapper.className = "";
                 }
-                // this.$.chatWrapper.className = "";
             },
 
             sendMessage : function(){

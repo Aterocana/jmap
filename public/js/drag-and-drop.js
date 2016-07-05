@@ -7,9 +7,7 @@ function allowDrop(ev) {
 function drag(ev) {
     ev.dataTransfer.setData('Text/html', ev.target.id);
     ev.dataTransfer.effectAllowed = 'move';
-    console.log(ev.path);
     objID = ev.path[2].id;
-    // console.log(objID);
 }
 
 function drop(ev) {

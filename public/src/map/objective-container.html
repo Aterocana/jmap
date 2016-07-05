@@ -49,10 +49,27 @@
                  * 	 	}
                  * }
                  */
-                console.log(obj);
+                var cssClass = "";
+                switch (this.counter) {
+                    case 0:
+                    cssClass = "first";
+                    break;
+                    case 1:
+                    cssClass = "second";
+                    break;
+                    case 2:
+                    cssClass = "third";
+                    break;
+                    case 3:
+                    cssClass = "fourth";
+                    break;
+                    default:
+                    cssClass = "first";
+                }
                 this.objectives[obj.id] = obj;
                 var newObj              = new ObjectiveItem(obj);
                 this.elements[obj.id]   = newObj;
+                newObj.setClass(cssClass);
                 this.$.wrapper.appendChild(newObj);
                 this.counter++;
             },

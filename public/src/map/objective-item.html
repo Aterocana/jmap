@@ -5,20 +5,40 @@
         .obj {
             width: 45%;
             height: 45%;
-            /*background-color: red;*/
             z-index: 3;
             position: absolute;
-            top: 2px;
-            left: 2px;
+            opacity: 0.8;
+        }
+        .first{
+            top: 2.5%;
+            left: 2.5%;
+        }
+        .second{
+            top: 2.5%;
+            right: 2.5%;
+        }
+        .third{
+            bottom: 2.5%;
+            left: 2.5%;
+        }
+        .fourth{
+            bottom: 2.5%;
+            right: 2.5%;
         }
     </style>
     <template>
-        <div id="{{id}}" class="obj" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)"></div>
+        <div id="{{id}}" class="obj first" style="background-color: {{owner.color}}" draggable="true" ondragstart="drag(event)"></div>
     </template>
     <script>
         var ObjectiveItem = Polymer({
             is: 'objective-item',
             properties: {
+                isOwner: {
+                    type: Function
+                },
+                setClass: {
+                    type: Function
+                }
             },
             factoryImpl : function(obj){
                 /**
@@ -47,6 +67,9 @@
             },
             isOwner : function(){
                 return this.owner.id === userID;
+            },
+            setClass: function(cssClass){
+                this.cssClass = cssClass;
             }
         });
     </script>
