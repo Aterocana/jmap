@@ -50,7 +50,7 @@
                  * }
                  */
                 var cssClass = "";
-                switch (this.counter) {
+                switch (this.counter%4) {
                     case 0:
                     cssClass = "first";
                     break;
@@ -80,7 +80,7 @@
                 delete this.objectives[id];
                 this._toArray(this.elements).forEach(function(elem, index){
                     var cssClass = "";
-                    switch (index) {
+                    switch (index%4) {
                         case 0:
                         cssClass = "first";
                         break;

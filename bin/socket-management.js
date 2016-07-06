@@ -83,21 +83,21 @@ module.exports = function(io){
         socket.on('removeObj', function(obj){
             console.log("SERVER received removeObj", obj);
             // cerco l'oggetto indice nell'array degli obiettivi
-            let objIndex = objectives[obj.id];
+            let objIndex = objectiveIndexes[obj.id];
+            console.log(objIndex);
             if(objIndex.index !== -1){
-                clientsMap[objIndex.user].objectives.splice(objIndex.index, 1);
-                objectives[obj.id].index = -1;
+                let removedObj = clientsMap[objIndex.user].objectives[objIndex.index];
+                // clientsMap[objIndex.user].objectives.splice(objIndex.index, 1);
+                // TODO eliminare
+                console.log(clientsMap[objIndex.user].objectives);
+                delete clientsMap[objIndex.user].objectives[objIndex.index];
+                console.log(clientsMap[objIndex.user].objectives);
+                objectiveIndexes[obj.id].index = -1;
                 socket.broadcast.emit('updateUsers', clientsMap);
                 socket.emit('updateUsers', clientsMap);
-                socket.broadcast.emit('removeObj', obj.id);
-                socket.emit('removeObj', obj.id);
+                socket.broadcast.emit('removeObj', removedObj);
+                socket.emit('removeObj', removedObj);
             }
-            // let index = clientsMap[socket.id].objectives.indexOf(data);
-            // if(index !== -1){
-            //     clientsMap[socket.id].objectives.splice(index, 1);
-            //     socket.broadcast.emit('updateUsers', clientsMap);
-            //     socket.emit('updateUsers', clientsMap);
-            // }
 
         });
 
@@ -137,15 +137,17 @@ module.exports = function(io){
 
         socket.on('disconnect', function() {
             console.log("user",clientsMap[socket.id],"disconnected");
-            let objectives = clientsMap[socket.id].objectives;
-            if(objectives){
-                objectives.forEach(function(obj){
-                    socket.broadcast.emit('removeObj', obj);
-                });
+            if(clientsMap[socket.id]){
+                let objectives = clientsMap[socket.id].objectives;
+                if(objectives){
+                    objectives.forEach(function(obj){
+                        socket.broadcast.emit('removeObj', obj);
+                    });
+                }
+                // socket.broadcast.emit('quitUser', clientsMap[socket.id]);
+                delete clientsMap[socket.id];
+                socket.broadcast.emit('updateUsers', clientsMap);
             }
-            // socket.broadcast.emit('quitUser', clientsMap[socket.id]);
-            delete clientsMap[socket.id];
-            socket.broadcast.emit('updateUsers', clientsMap);
         });
     });
 

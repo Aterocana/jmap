@@ -1,0 +1,73 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module is="delete-bar">
+    <template>
+        <style>
+            #deleteBar{
+                z-index: 5;
+                position   : fixed;
+                width      : 100%;
+                height     : 50px;
+                top        : -150px;
+                text-align : center;
+                transition : all 300ms ease-in-out;
+                -webkit-box-shadow    : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -moz-box-shadow       : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -o-box-shadow         : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                box-shadow            : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                background-color: rgba(255, 255, 255, 0.8);
+            }
+            #deleteBar.show{
+                transform : translate(0, 150px);
+            }
+        </style>
+        <div id="deleteBar" ondrop="deleteObj(event)" ondragover="allowDrop(event)" ondragenter="enterRed(event)" ondragleave="exitRed(event)">
+            <paper-icon-button suffix on-click="sendMessage" icon="delete" alt="delete" title="delete"></paper-icon-button>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'delete-bar',
+            properties: {
+                hidden: {
+                    type  : Boolean,
+                    value : true
+                },
+                red: {
+                    type  : Boolean,
+                    value : false
+                }
+            },
+            ready : function(){
+                this.hidden = true;
+                this.red    = false;
+            },
+            toggle: function(){
+                // console.log("toggle "+this.hidden);
+                this.$.deleteBar.className=(this.hidden)?"show":"";
+                this.hidden = !this.hidden;
+            },
+            toggleRed: function(){
+                this.$.deleteBar.style.backgroundColor = (this.red)?"rgba(255,255,255,0.8)":"rgba(255,0,0,0.8)";
+                this.red = !this.red;
+            },
+            show: function(){
+                this.hidden                = false;
+                this.$.deleteBar.className = "show";
+            },
+            hide: function(){
+                this.hidden                = true;
+                this.$.deleteBar.className = "";
+            },
+            redify: function(){
+                this.red                               = true;
+                this.$.deleteBar.style.backgroundColor = "rgba(255,0,0,0.8)";
+            },
+            whitify: function(){
+                this.red                               = false;
+                this.$.deleteBar.style.backgroundColor = "rgba(255,255,255,0.8)";
+            }
+        });
+    </script>
+</dom-module>
