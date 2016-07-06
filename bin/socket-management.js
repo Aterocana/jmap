@@ -84,21 +84,15 @@ module.exports = function(io){
             console.log("SERVER received removeObj", obj);
             // cerco l'oggetto indice nell'array degli obiettivi
             let objIndex = objectiveIndexes[obj.id];
-            console.log(objIndex);
-            if(objIndex.index !== -1){
+            if(objIndex !== -1 && (clientsMap[socket.id].admin || objIndex.user === socket.id)){
                 let removedObj = clientsMap[objIndex.user].objectives[objIndex.index];
-                // clientsMap[objIndex.user].objectives.splice(objIndex.index, 1);
-                // TODO eliminare
-                console.log(clientsMap[objIndex.user].objectives);
                 delete clientsMap[objIndex.user].objectives[objIndex.index];
-                console.log(clientsMap[objIndex.user].objectives);
                 objectiveIndexes[obj.id].index = -1;
                 socket.broadcast.emit('updateUsers', clientsMap);
                 socket.emit('updateUsers', clientsMap);
                 socket.broadcast.emit('removeObj', removedObj);
                 socket.emit('removeObj', removedObj);
             }
-
         });
 
         //riposizionamento di un obiettivo
